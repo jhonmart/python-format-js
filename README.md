@@ -43,7 +43,7 @@ String formatting like Python's .format()
 - [ ] '-' - Use a minus sign for negative values only
 - [ ] ' ' - Use a leading space for positive numbers
 - [ ] ',' - Use a comma as a thousand separator
-- [ ] '\_' - Use a underscore as a thousand separator
+- [x] '_' - Use a underscore as a thousand separator
 - [ ] 'b' - Binary format
 - [ ] 'c' - Converts the value into the corresponding unicode character
 - [ ] 'd' - Decimal format
@@ -61,7 +61,7 @@ String formatting like Python's .format()
 
 ## Examples
 
-    ```console
+    ```
     $ '{:<6} {:<28} {:>5} {:^9}'.format('aba','x  1 teste','x2','x3')
     $ 'aba    x  1 teste                      x2    x3    '
     ```
