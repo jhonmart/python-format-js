@@ -1,4 +1,3 @@
-// Abaixo mais atualizado
 Object.defineProperty(String.prototype, 'format', {
     value: function(...str) {
     	let i = 0;

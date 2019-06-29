@@ -1,0 +1,25 @@
+{
+  "name": "python-format-js",
+  "version": "1.0.0",
+  "description": "String formatting like Python's  .format()",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhonmart/python-format-js.git"
+  },
+  "keywords": [
+    "string",
+    "formatting",
+    "python",
+    "format"
+  ],
+  "author": "Jonatas Martins <jhonararipe@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhonmart/python-format-js/issues"
+  },
+  "homepage": "https://github.com/jhonmart/python-format-js#readme"
+}
