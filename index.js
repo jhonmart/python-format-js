@@ -1,22 +1,36 @@
 Object.defineProperty(String.prototype, 'format', {
-    value: function(...str) {
-    	let i = 0;
+	value: function(...str) {
+		let i = 0,
+			e = this; // Entrada
+			
+		e.split(' ').map(nth=>{
+			if(e.includes('{}'))
+				e = e.replace('{}', str.splice(0,1)[0])
+		});
 
-		return this.split(/([{}])/g).filter(a=>!['{','}',' ',''].includes(a)).map(c=>{
-			let params = /:(\D)?(\d.*)/g.exec(c) || c;
+		return !e.includes('{')? e : e.split(/([{}])/g).filter(a=>!['{','}'].includes(a)).map(c=>{
+			let params = +c.slice(1) && !c.includes('.')? +c.slice(1) : /:(\D)+?(\D)*?(\d.*)/g.exec(c) || c, // /:(\D)+?(\D)*?(\d.*)*?(\D)+?/g
+				str_a = str[i];
 
 			if(typeof params=="string") return c;
+			else if(typeof params=="number") return " ".repeat(params).replace(RegExp(`.{${str_a.length}}`), str[i++]);
 			else{
-				let space = " ".repeat((+params[2])-str[i].length),
-					elem = [space, str[i]],
-					space_c = " ".repeat(+params[2]),
-					num = Math.floor((space_c.length-str[i].length)/2),
-					str_pos = " ".repeat(num)+str[i++],
+				let p1 = params[1],
+					fill_elem = ([...'<^>.'].includes(p1)? ' ':p1),
+					space = !p1.includes('.')? fill_elem.repeat((+params[3])-str_a.length) : '',
+					elem = [space, str_a],
+					srt_crop = str_a.slice(0,+params[3]),
+					space_c = fill_elem.repeat(+params[3]),
+					num = Math.floor((space_c.length-str_a.length)/2),
+					str_pos = num>0? fill_elem.repeat(num)+str[i++]: '',
 					elem_center = space_c.replace(RegExp(`.{${str_pos.length}}`), str_pos);
 
-				return (params[1]=='>'?  elem : params[1]=='<'? elem.reverse() : [elem_center]).join('');
+				return (params.includes('>')?  elem : 
+						params.includes('<')? elem.reverse() : 
+						params.includes('^')? [elem_center] :  
+						params.includes('.')? [srt_crop] : '').join('');
 			}
 			
 		}).join('');
-    }
+	}
 });
