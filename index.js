@@ -1,4 +1,5 @@
 Object.defineProperty(String.prototype, 'format', {
+
 	value: function (...str) {
 		let i = 0,
 			e = this; // Entrada
@@ -31,6 +32,7 @@ Object.defineProperty(String.prototype, 'format', {
 							params.includes('^') ? [elem_center] :
 								params.includes('.') ? [srt_crop] : '').join('');
 				}
+
 			}
 
 		}).join('');
