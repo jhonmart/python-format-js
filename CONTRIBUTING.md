@@ -16,7 +16,6 @@ Implements params:
 - `-` - Use a minus sign for negative values only
 - `' '` - Use a leading space for positive numbers
 - `,` - Use a comma as a thousand separator
-- `_` - Use a underscore as a thousand separator
 - `b` - Binary format
 - `c` - Converts the value into the corresponding unicode character
 - `d` - Decimal format
