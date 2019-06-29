@@ -20,3 +20,8 @@ test("Formatação de alinhamento com mais paramentros: '_'", () => {
   expect("{:_<6} {:<28} {:>5} {:^9}".format("abs", "x  1 teste", "x2", "x3"))
     .toEqual('abs___ x  1 teste                      x2    x3    ')
 })
+
+test("Formatação de alinhamento 3", () => {
+  expect("{:_<6} {:>28} {:>5} {:^9}".format("abs", "x  1 teste", "x2", "x3"))
+    .toEqual('abs___                   x  1 teste    x2    x3    ')
+})

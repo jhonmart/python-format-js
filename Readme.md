@@ -61,7 +61,8 @@ String formatting like Python's .format()
 
 ## Examples
 
-    ```
+    ```javascript
+
     $ '{:<6} {:<28} {:>5} {:^9}'.format('aba','x  1 teste','x2','x3')
     $ 'aba    x  1 teste                      x2    x3    '
 
@@ -70,6 +71,5 @@ String formatting like Python's .format()
      
     $ '{:_<6} {:<28} {:>5} {:^9}'.format("abs", "x  1 teste", "x2", "x3")
     $ 'abs___ x  1 teste                      x2    x3    '
-
 
     ```
