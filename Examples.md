@@ -1,84 +1,11 @@
-## Overview
 
-String formatting like Python's .format()
-
-## Install
-
-#### Node
-
-1.  Install:
-
-
-    ```console
-    $ npm install python-format-js
-    ```
-
-    or
-
-     ```console
-    $ yarn add python-format-js
-    ```
-
-2.  Require:
-
-    ```javascript
-    const format = require("python-format-js");
-    ```
-
-## Tests
-
-    ```console
-    $ npm test
-    ```
-
-    or
-
-    ```console
-    $ yarn test
-    ```
-
-### Browser
-
-1.  Define `window.format`:
-
-    ```html
-    <script src="path/to/python-format-js"></script>
-    ```
-
-## Supported Parameter Values
-
-- [x] '<' - Left aligns the result (within the available space)
-- [x] '>' - Right aligns the result (within the available space)
-- [x] '^' - Center aligns the result (within the available space)
-- [ ] '=' - Places the sign to the left most position
-- [ ] '+' - Use a plus sign to indicate if the result is positive or negative
-- [ ] '-' - Use a minus sign for negative values only
-- [ ] ' ' - Use a leading space for positive numbers
-- [x] ',' - Use a comma as a thousand separator
-- [x] '_' - Use a underscore as a thousand separator
-- [ ] 'b' - Binary format
-- [ ] 'c' - Converts the value into the corresponding unicode character
-- [ ] 'd' - Decimal format
-- [ ] 'e' - Scientific format, with a lower case e
-- [ ] 'E' - Scientific format, with an upper case E
-- [ ] 'f' - Fix point number format
-- [ ] 'F' - Fix point number format, upper case
-- [ ] 'g' - General format
-- [ ] 'G' - General format (using a upper case E for scientific notations)
-- [ ] 'o' - Octal format
-- [ ] 'x' - Hex format, lower case
-- [ ] 'X' - Hex format, upper case
-- [ ] 'n' - Number format
-- [ ] '%' - Percentage format
-
-## Examples
+# Examples
 
 **Obs:The result expected is the same as Python**
 ---
+All examples tested
+---
 
-- Please report any bug
-
-[More Examples](./Examples.md)
 
     - simples_change:
    ```javascript 
@@ -117,6 +44,23 @@ String formatting like Python's .format()
     "2 3.14 true"
 ```
 
+
+    - overflow_srt_length_right:
+```javascript
+
+    "{:>3}".format("Gustavo")
+
+    "Gustavo"
+```
+
+    - overflow_srt_length_left:
+```javascript
+
+    "{:<3}".format("Gustavo")
+
+    "Gustavo"
+```
+
     - overflow_srt_length_center:
 ```javascript
 
@@ -141,6 +85,22 @@ String formatting like Python's .format()
     "   oii"
 ```
 
+    - align_center_incomplete:
+```javascript
+
+    "{:^6}".format("oii")
+
+    " oii  "
+```
+
+    - align_center_complete:
+```javascript
+
+    "{:^7}".format("oii")
+    
+    "  oii  "
+```
+
     - crop:
 ```javascript
 
@@ -157,6 +117,13 @@ String formatting like Python's .format()
     "test      "
 ```
 
+    - char_append_left:
+```javascript
+
+    "{:_<7}".format("Jhon")
+
+    "Jhon___"
+```
 
     - char_append_right:
 ```javascript
@@ -190,6 +157,14 @@ String formatting like Python's .format()
     " Jhon Mart    "
 ```
 
+    - overflow_atrib:
+```javascript
+
+    "{:>5} {:<8}".format("Jhon", "Mart", "Lenss")
+
+    " Jhon Mart    "
+```
+
     - overflow_srt_length_multiple_params:
 ```javascript
 
@@ -198,12 +173,85 @@ String formatting like Python's .format()
     "a22hhfdf123g4 x  1 teste                   x2    x3    "
 ```
 
+
+    - overflow_params:
+```javascript
+
+    "{:>5} {:<8}".format("Jhon")
+
+    "Overflow of parameters greater than amount of values"
+```
+
+    - string_and_param_left_align:
+```javascript
+
+    "Olá {:<8}".format("Jhon")
+    
+    "Olá Jhon    "
+```
+
+    - string_and_param_right_align:
+```javascript
+
+    "Olá {:>8}".format("Jhon")
+
+    "Olá     Jhon"
+```
+
+    - string_and_param_center_align:
+```javascript
+
+    "Olá {:^8}".format("Jhon")
+    
+    "Olá   Jhon  "
+```
+
+    - string_and_param_combine:
+```javascript
+
+    "Olá {:_>5}, sua idade é {}".format("Jhon", '21')
+
+    "Olá _Jhon, sua idade é 21"
+```
+
     - param_and_string_combin:
 ```javascript
 
     "Olá {}, sua idade é {:_>5}".format("Jhon", '21')
 
     "Olá Jhon, sua idade é ___21"
+```
+
+    - param_set_str:
+```javascript
+
+    "Minha idade é {1} e meu nome é {0}".format("Jhon", '21')
+
+    "Minha idade é 21 e meu nome é Jhon"
+```
+
+    - combine_param_set_str_and_param:
+```javascript
+
+    "Minha idade é {1} e meu nome é {0}, tenho algo mais que {1}".format("Jhon",'21')
+
+    "Minha idade é 21 e meu nome é Jhon, tenho algo mais que 21"
+```
+
+    - test_ref_fail:
+```javascript
+
+    "{:>2} {2}".format("x2", "x3")
+    
+    "Fail ref"
+```
+
+    - sintax_fail:
+```javascript
+
+    "{:+d} {:<4}".format(32, "x3")
+    
+    ":+d 32  "
 ```
 
     - center_ast:
@@ -222,6 +270,4 @@ String formatting like Python's .format()
     "1,234,567,890"
 ```
 
-### Help us
-
-[CONTRIBUTING](./CONTRIBUTING.md)
+    
