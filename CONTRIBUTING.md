@@ -15,7 +15,6 @@ Implements params:
 - `+` - Use a plus sign to indicate if the result is positive or negative
 - `-` - Use a minus sign for negative values only
 - `' '` - Use a leading space for positive numbers
-- `,` - Use a comma as a thousand separator
 - `b` - Binary format
 - `c` - Converts the value into the corresponding unicode character
 - `d` - Decimal format
@@ -30,3 +29,18 @@ Implements params:
 - `X` - Hex format, upper case
 - `n` - Number format
 - `%` - Percentage format
+
+### Important
+
+- Run the test
+
+    ```console
+    $ npm test
+    ```
+
+    or
+
+    ```console
+    $ yarn test
+    ```
+
