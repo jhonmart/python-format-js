@@ -1,4 +1,6 @@
-## Overview
+# Overview
+
+[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js)
 
 String formatting like Python's .format()
 
