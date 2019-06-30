@@ -25,13 +25,13 @@ Object.defineProperty(String.prototype, 'format', {
 		else
 			srtSpc.map((nth,pE)=>{
 				let pElem = /\d+.*?/.exec(nth),
-					sep = nth.match(/[,_]/g); // Separadores (Milhar)
-					
+					sep = nth.match(/[,_]/g), // Separadores (Milhar)
+					lett = /{:(\D+.*?)}/g.exec(nth); // Letras
+
 				if(nth.includes('{}')){ // Change default
 					e = e.replace(nth, str[pE]); // Change for value
 					removeStr.push(pE);
-				}
-				else if(pElem){
+				} else if(pElem){
 					if(pElem[0].length+2==nth.length)
 						e = e.replace(nth, str[+pElem[0]]); // Change for value
 					else if(str.length>pE && !nth.includes('.')) // Overflow string lenght
@@ -39,10 +39,18 @@ Object.defineProperty(String.prototype, 'format', {
 							e = e.replace(nth, str[pE]); // Change for value
 							removeStr.push(pE);
 						}
-				}
-				else if(sep){
+				} else if(sep){
 					let div = str[pE].split(/(?=(?:...)*$)/).join(sep[0]);
 					e = e.replace(nth, div); // Change for value
+					removeStr.push(pE);
+				} else if(lett){
+					let chars = lett[1].split('');
+					if(chars.includes('f')){
+						let val = parseFloat(str[pE]).toFixed(6),
+							exp = +str[pE]>0? chars[0]==' '? ' ' : chars[0]=='+'? '+' : '' : '';
+						e = e.replace(nth, exp+val); // Change for value
+					} 
+
 					removeStr.push(pE);
 				}
 			});
