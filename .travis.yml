@@ -1,10 +1,11 @@
 language: node_js
 node_js:
- - 10
+  - 10
 
 script:
   - npm install
-  - npm test
+  - npm ci
+  - npm run test:coveralls
 
-after-script:
-  - npm run coverage
+notifications:
+  email: false

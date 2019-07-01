@@ -4,7 +4,9 @@
   "description": "String formatting like Python's  .format()",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   },
   "homepage": "https://github.com/jhonmart/python-format-js#readme",
   "devDependencies": {
+    "coveralls": "^3.0.4",
     "jest": "^24.8.0"
   }
 }
