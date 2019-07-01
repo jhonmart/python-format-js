@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+ - 10
+
+script:
+  - npm install
+  - npm test
+
+after-script:
+  - npm run coverage
