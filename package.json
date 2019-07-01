@@ -1,6 +1,6 @@
 {
   "name": "python-format-js",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "String formatting like Python's  .format()",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,9 @@
     "format"
   ],
   "author": "Jonatas Martins <jhonararipe@gmail.com>",
+  "contributors": [
+    "Romulo Rocha romulorocha063@gmail.com"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jhonmart/python-format-js/issues"
