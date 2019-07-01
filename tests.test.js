@@ -154,7 +154,7 @@ test("test_ref_fail", () => {
 test("sintax_fail", () => {
   expect("{:+d} {:<4}"
     .format(32, "x3"))
-    .toEqual(":+d 32  ")
+    .toEqual(":+d x3  ")
 })
 test("center_ast", () => {
   expect("{:*^30}"
