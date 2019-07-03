@@ -1,12 +1,6 @@
 # Overview
 
-[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js)
-
-[![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg)](https://coveralls.io/github/jhonmart/python-format-js)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-
-[![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
+[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js) [![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg)](https://coveralls.io/github/jhonmart/python-format-js) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
 String formatting like Python's .format()
 
@@ -75,9 +69,9 @@ String formatting like Python's .format()
 - [x] 'e' - Scientific format, with a lower case e
 - [x] 'E' - Scientific format, with an upper case E
 - [x] 'f' - Fix point number format
-- [ ] 'F' - Fix point number format, upper case
-- [ ] 'g' - General format
-- [ ] 'G' - General format (using a upper case E for scientific notations)
+- [x] 'F' - Fix point number format, upper case
+- [x] 'g' - General format
+- [x] 'G' - General format (using a upper case E for scientific notations)
 - [x] 'o' - Octal format
 - [x] 'x' - Hex format, lower case
 - [x] 'X' - Hex format, upper case
