@@ -4,7 +4,6 @@ Object.defineProperty(String.prototype, 'format', {
 		let i = 0, // Indice para ajudar a percorrer valores
 			e = this, // Entrada
 			removeStr = [], // Array de ajuda para remover valores já usados
-			expceptions = ['{}','{:}','{:^}','{:<}','{:>}'],
 			srtSpc = e.match(/({.*?})/g), // Separação de cada mascara
 			elemForm = (mask, el) =>{
 				return !mask.includes('{')? mask : 
@@ -35,8 +34,8 @@ Object.defineProperty(String.prototype, 'format', {
 							i++;
 							return (params.includes('>')? elem : 
 									params.includes('<')? elem.reverse() : 
-									params.includes('^')? [sz_sp<0?valSet:elem_center] :  
-									params.includes('.')? [srt_crop] : '').join('');
+									params.includes('^')? [elem_center] :  
+									[srt_crop]).join('');
 						}
 					}
 							
@@ -52,11 +51,7 @@ Object.defineProperty(String.prototype, 'format', {
 					val;
 
 				if(lett_last){ // Verificar se tem Letra
-					if(!+str[pE] && !['G','g'].includes(nth)){
-						throw new Error(`Traceback (most recent call last):
-							"${nth}".format(${param.map(e=>typeof e=="string"? `"${e}"` : e).join(', ')})
-	ValueError: Unknown format code '${lett_last}' for object of type 'str'`);
-					}else if(lett_last.toLowerCase().includes('f')){
+					if(lett_last.toLowerCase().includes('f')){
 						let exp = +str[pE]>0? 
 								nth.includes(' ')? ' ' : 
 								nth.includes('+')? '+' : '' : '';
@@ -70,8 +65,7 @@ Object.defineProperty(String.prototype, 'format', {
 									nth.includes(' ')? ' ' : // Marcador é espaço e numero é positivo
 									nth.includes('+')? '+' : // Marcador é positivo e numero é positivo
 									nth.includes('-')? '+' : // Marcador é negativo e numero é positivo
-									nth.includes('') ? '' : // Marcador Não existe
-									'-' : // Marcador é negativo e numero também
+									'' : // Marcador é negativo e numero também
 								'-'; // Numero negativo
 
 						val = op+(nth.includes('#')? pad.mask[lett_last] : '')+
@@ -110,7 +104,7 @@ Object.defineProperty(String.prototype, 'format', {
 			return "Fail ref"; // Fail line
 		else if(srtSpc.length-refParam.length>str.length || 
 				srtSpc.length-refParam.length>=str.length && refParam.length)
-			return "Overflow of parameters greater than amount of values"; // Fail line
+			throw new Error(`Traceback (most recent call last):\n\t"${e}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\nIndexError: tuple index out of range`);
 		else{
 			srtSpc.map((nth,pE)=>{
 				let lett = /{(\d+)?:?([+_-])?(\W|_)?(\d+)?([eEfFdxXobcGg])?}/.exec(nth),
@@ -129,21 +123,12 @@ Object.defineProperty(String.prototype, 'format', {
 					e = e.replace(nth, str[pE]); // Change for value
 					removeStr.push(pE);
 				} else if(lett && !lett[4] && !lett[5] || lett && lett[1]){ // Change default
-					if(expceptions.includes(nth)){
-						e = e.replace(nth, str[pE]); // Change for value
-						removeStr.push(pE);
-					} else if(str.length-1>pE && !nth.includes('.')){ // Overflow string lenght
-						if(str[pE].length >= +( lett[1] || ['0'])[0]){ 
-							e = e.replace(nth, str[pE]); // Change for value
-							removeStr.push(pE);
-						}
-					}
+					e = e.replace(nth, str[pE]); // Change for value
+					removeStr.push(pE);
 				} else if(lett){
 					elemLetter(lett, pE, nth);
 				} else if(expt && expt[1] && !['eEfFdxXobcGg'].includes(expt)){
-					throw new Error(`Traceback (most recent call last):
-	"${nth}".format(${param.map(e=>typeof e=="string"? `"${e}"` : e).join(', ')})
-ValueError: Unknown format code '${expt[1]}' for object of type '${typeof (+str[pE] || str[pE])}'`);
+					throw new Error(`Traceback (most recent call last):\n\t"${nth}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\nValueError: Unknown format code '${expt[1]}' for object of type '${typeof (+str[pE] || str[pE])}'`);
 				}
 			});
 		}

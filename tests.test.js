@@ -94,9 +94,13 @@ test("overflow_srt_length_multiple_params", () => {
 });
 
 test("overflow_params", () => {
-  expect("{:>5} {:<8}".format("Jhon")).toEqual(
-    "Overflow of parameters greater than amount of values"
-  );
+  var captured = null;
+  try {
+    expect("{:>5} {:<8}".format("Jhon")).toEqual(null);
+  } catch(e) {
+    captured = 'Fail';
+  }
+  expect(captured).toBe(`Fail`);
 });
 
 test("string_and_param_left_align", () => {
@@ -158,6 +162,9 @@ test("float", () => {
 test("float_space", () => {
   expect("{: f}; {: f}".format(3.14, -3.14)).toEqual(" 3.140000; -3.140000");
 });
+test("float_align", () => {
+  expect("{:<15f}; {: f}".format(3.14, -3.14)).toEqual("3.140000       ; -3.140000");
+});
 
 test("float_plus", () => {
   expect("{:+f}; {:+f}".format(3.14, -3.14)).toEqual("+3.140000; -3.140000");
@@ -170,6 +177,9 @@ test("float_less", () => {
 test("binary", () => {
   expect("{:b}".format(42)).toEqual("101010");
 });
+test("binary_align", () => {
+  expect("{:>4b}".format(5)).toEqual(" 101");
+});
 
 test("binary_mask", () => {
   expect("{:#b}".format(42)).toEqual("0b101010");
@@ -181,6 +191,14 @@ test("octal", () => {
 
 test("octal_mask", () => {
   expect("{:#o}".format(42)).toEqual("0o52");
+});
+
+test("octal_mask_sign", () => {
+  expect("{:-o}".format(42)).toEqual("+52");
+});
+
+test("octal_mask_space", () => {
+  expect("{: o}".format(42)).toEqual(" 52");
 });
 
 test("number_octal_positive", () => {
@@ -224,8 +242,30 @@ test("percent", () => {
   expect("{:%}".format(0.065)).toEqual("6.500000%");
 });
 
+test("geral", () => {
+  expect("{:g}".format('Hello World')).toEqual("Hello World");
+});
+
+test("geral_align", () => {
+  expect("{:<5g}".format('T')).toEqual("T    ");
+});
+
+test("geral_upper_case", () => {
+  expect("{:G}".format("Hello World")).toEqual("HELLO WORLD");
+});
+
 test("thousands_separator", () => {
   expect("{:,}".format(1234567890)).toEqual("1,234,567,890");
+});
+
+test("fail_lett", () => {
+    var captured = null;
+    try {
+      expect("{:a}".format(12345)).toEqual(null);
+    } catch(e) {
+      captured = 'Fail';
+    }
+    expect(captured).toBe(`Fail`);
 });
 
 //more tests
