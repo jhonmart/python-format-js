@@ -134,9 +134,11 @@ test("combine_param_set_str_and_param", () => {
     )
   ).toEqual("Minha idade é 21 e meu nome é Jhon, tenho algo mais que 21");
 });
+
 test("test_ref_fail", () => {
   expect("{:>2} {2}".format("x2", "x3")).toEqual("Fail ref");
 });
+
 test("sintax_fail", () => {
   expect("{:+d} {:<4}".format(32, "x3")).toEqual(
     "x3                              x3  "
@@ -181,6 +183,14 @@ test("octal_mask", () => {
   expect("{:#o}".format(42)).toEqual("0o52");
 });
 
+test("number_octal_positive", () => {
+  expect("{:+#o}".format(4233)).toEqual("+0o10211");
+});
+
+test("number_octal_negative", () => {
+  expect("{:-#o}".format(-4233)).toEqual("-0o10211");
+});
+
 test("hexadecimal", () => {
   expect("{:x}".format(42)).toEqual("2a");
 });
@@ -204,6 +214,11 @@ test("exp", () => {
 test("exp_upper_case", () => {
   expect("{:E}".format(4233)).toEqual("4.233E+3");
 });
+
+test("exp_size_over", () => {
+  expect("{:<15e}".format(4233)).toEqual("4.233e+3       ");
+});
+
 
 test("percent", () => {
   expect("{:%}".format(0.065)).toEqual("6.500000%");
