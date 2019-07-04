@@ -5,6 +5,7 @@ Object.defineProperty(String.prototype, 'format', {
 			e = this, // Entrada
 			removeStr = [], // Array de ajuda para remover valores já usados
 			srtSpc = e.match(/({.*?})/g), // Separação de cada mascara
+			failRun,
 			elemForm = (mask, el) =>{
 				return !mask.includes('{')? mask : 
 							mask.split(/([{}])/g)
@@ -20,16 +21,19 @@ Object.defineProperty(String.prototype, 'format', {
 						else{
 							let p1 = params[1],
 								fill_elem = ([...'<^>.'].includes(p1)? ' ':p1),
-								sz_sp = (+params[3])-valSet.length,
-								space = !p1.includes('.')? 
-											fill_elem.repeat(sz_sp<0? valSet.length:sz_sp) : '',
+								sz_sp = (+params[3])-valSet.length;
+
+							sz_sp = sz_sp<0? valSet.length : sz_sp;
+
+							let	space = !p1.includes('.')? 
+											fill_elem.repeat(sz_sp) : '',
 								elem = [space, valSet],
 								srt_crop = valSet.slice(0,+params[3]),
 								space_c = fill_elem.repeat(+params[3]),
 								num = Math.floor((space_c.length-valSet.length)/2),
 								str_pos = num>0? 
 											fill_elem.repeat(num)+valSet: '',
-								elem_center = space_c.replace(RegExp(`.{${sz_sp<0? valSet.length : str_pos.length}}`), str_pos);
+								elem_center = space_c.replace(RegExp(`.{${str_pos.length || sz_sp}}`), str_pos);
 								
 							i++;
 							return (params.includes('>')? elem : 
@@ -57,9 +61,6 @@ Object.defineProperty(String.prototype, 'format', {
 								nth.includes('+')? '+' : '' : '';
 
 						val = exp+(parseFloat(str[pE]).toFixed(6));
-						val = !lett[4]? val : // Validar se precisa de pós-tratamento
-								elemForm(nth_pers, val);
-
 					} else if([...'dxXob'].includes(lett_last)){
 						let op = (+str[pE])>0? // Numero é positivo
 									nth.includes(' ')? ' ' : // Marcador é espaço e numero é positivo
@@ -70,19 +71,15 @@ Object.defineProperty(String.prototype, 'format', {
 
 						val = op+(nth.includes('#')? pad.mask[lett_last] : '')+
 								(+str[pE]).toString(pad.for[lett_last]).replace('-',''); // d na ultima posição procura a formula e mostra seu resultado
-					
 						val = nth.includes('X')? val.toUpperCase() : val; // Caixa Alta (FONTE)
-						val = nth.replace(/[0-9a-z#+ -]/gi,'').length<4 || !lett[4]? val : 
-								elemForm(nth_pers, val);
-					} else if(['e','E'].includes(lett_last)){
+					} else if(lett_last.toLowerCase()=='g'){
+						val = lett_last == 'G'? str[pE].toUpperCase() : str[pE];
+					} else { //if(lett_last.toLowerCase()=='e'){
 						val = (+str[pE]).toExponential();
 						val = nth.includes('E')? val.toUpperCase() : val;
-						val = !lett[4]? val : elemForm(nth_pers, val);
-					} else if(['g','G'].includes(lett_last)){
-						val = lett_last == 'G'? str[pE].toUpperCase() : str[pE];
-						val = !lett[4]? val : elemForm(nth_pers, val);
 					}
 
+					val = !lett[4]? val : elemForm(nth_pers, val); // Change align
 					e = e.replace(nth, val); // Change for value
 					removeStr.push(pE);
 				}
@@ -101,16 +98,17 @@ Object.defineProperty(String.prototype, 'format', {
 		}).filter(p=>p);
 
 		if(paramStr.length)
-			return "Fail ref"; // Fail line
-		else if(srtSpc.length-refParam.length>str.length || 
-				srtSpc.length-refParam.length>=str.length && refParam.length)
-			throw new Error(`Traceback (most recent call last):\n\t"${e}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\nIndexError: tuple index out of range`);
+			failRun = `ValueError: cannot switch from automatic field numbering to manual field specification`;
+		else if(srtSpc.length-refParam.length>str.length || srtSpc.length-refParam.length>=str.length && refParam.length)
+			failRun = `IndexError: tuple index out of range`;
 		else{
 			srtSpc.map((nth,pE)=>{
 				let lett = /{(\d+)?:?([+_-])?(\W|_)?(\d+)?([eEfFdxXobcGg])?}/.exec(nth),
 					expt = /{.*?([a-zA-Z])?}/.exec(nth);
 					
-				if(nth.includes('%')){
+				if(expt && expt[1] && !lett && !['eEfFdxXobcGg'].includes(expt)){
+					failRun = `ValueError: Unknown format code '${expt[1]}' for object of type '${typeof (+str[pE] || str[pE])}'`;
+				} else if(nth.includes('%')){
 					let val = (+str[pE]*100).toFixed(6)+'%';
 					e = e.replace(nth, val); // Change for value
 				} else if(lett && [',','_'].includes(lett[3]) && +str[pE]){ // Separador deve existir e valor de atributo de ser numerico
@@ -127,14 +125,14 @@ Object.defineProperty(String.prototype, 'format', {
 					removeStr.push(pE);
 				} else if(lett){
 					elemLetter(lett, pE, nth);
-				} else if(expt && expt[1] && !['eEfFdxXobcGg'].includes(expt)){
-					throw new Error(`Traceback (most recent call last):\n\t"${nth}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\nValueError: Unknown format code '${expt[1]}' for object of type '${typeof (+str[pE] || str[pE])}'`);
-				}
+				}  
 			});
 		}
 
-		removeStr.reverse().map(pE=>str.splice(pE,1));
-
-		return elemForm(e, str);
+		if(failRun) throw new Error(`Traceback (most recent call last):\n\t"${e}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\n`+failRun);
+		else{
+			removeStr.reverse().map(pE=>str.splice(pE,1));
+			return elemForm(e, str);
+		}
 	}
 });
