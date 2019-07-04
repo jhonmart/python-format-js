@@ -140,7 +140,13 @@ test("combine_param_set_str_and_param", () => {
 });
 
 test("test_ref_fail", () => {
-  expect("{:>2} {2}".format("x2", "x3")).toEqual("Fail ref");
+    var captured = null;
+    try {
+      expect("{:>2} {2}".format("x2", "x3")).toEqual(null);
+    } catch(e) {
+      captured = 'Fail';
+    }
+    expect(captured).toBe(`Fail`);
 });
 
 test("sintax_fail", () => {
@@ -262,6 +268,16 @@ test("fail_lett", () => {
     var captured = null;
     try {
       expect("{:a}".format(12345)).toEqual(null);
+    } catch(e) {
+      captured = 'Fail';
+    }
+    expect(captured).toBe(`Fail`);
+});
+
+test("fail_lett_text", () => {
+    var captured = null;
+    try {
+      expect("{:j}".format('less')).toEqual(null);
     } catch(e) {
       captured = 'Fail';
     }
