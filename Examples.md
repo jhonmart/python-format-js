@@ -8,7 +8,7 @@ All examples tested
 
 
     - simples_change:
-   ```javascript 
+   ```javascript
     "{} {}".format("Jhon", "Mart")
 
     "Jhon Mart"
@@ -17,7 +17,7 @@ All examples tested
     - one_arg_int:
    ```javascript
     "{} ".format(2)
-    
+
     "2 "
 ```
 
@@ -32,7 +32,7 @@ All examples tested
     - one_arg_bool:
    ```javascript
     "{} ".format(true))
-    
+
     "true "
 ```
 
@@ -65,7 +65,7 @@ All examples tested
 ```javascript
 
     "{:^3}".format("Gustavo")
-    
+
     "Gustavo"
 ```
 
@@ -73,7 +73,7 @@ All examples tested
 ```javascript
 
     "{:<6}".format("oii")
-    
+
     "oii   "
 ```
 
@@ -97,7 +97,7 @@ All examples tested
 ```javascript
 
     "{:^7}".format("oii")
-    
+
     "  oii  "
 ```
 
@@ -129,7 +129,7 @@ All examples tested
 ```javascript
 
     "{:_>7}".format("Jhon")
-    
+
     "___Jhon"
 ```
 
@@ -137,7 +137,7 @@ All examples tested
 ```javascript
 
     "{:_^7}".format("Jhon")
-    
+
     "_Jhon__"
 ```
 
@@ -145,7 +145,7 @@ All examples tested
 ```javascript
 
     "{:<5} {:>8}".format("Jhon", "Mart")
-    
+
     "Jhon      Mart"
 ```
 
@@ -153,7 +153,7 @@ All examples tested
 ```javascript
 
     "{:>5} {:<8}".format("Jhon", "Mart")
-    
+
     " Jhon Mart    "
 ```
 
@@ -169,7 +169,7 @@ All examples tested
 ```javascript
 
     "{:_<6} {:<28} {:>1} {:^9}".format("a22hhfdf123g4", "x  1 teste", "x2", "x3")
-    
+
     "a22hhfdf123g4 x  1 teste                   x2    x3    "
 ```
 
@@ -186,7 +186,7 @@ All examples tested
 ```javascript
 
     "Olá {:<8}".format("Jhon")
-    
+
     "Olá Jhon    "
 ```
 
@@ -202,7 +202,7 @@ All examples tested
 ```javascript
 
     "Olá {:^8}".format("Jhon")
-    
+
     "Olá   Jhon  "
 ```
 
@@ -242,7 +242,7 @@ All examples tested
 ```javascript
 
     "{:>2} {2}".format("x2", "x3")
-    
+
     "Fail ref"
 ```
 
@@ -250,7 +250,7 @@ All examples tested
 ```javascript
 
     "{:+d} {:<4}".format(32, "x3")
-    
+
     ":+d 32  "
 ```
 
@@ -270,4 +270,4 @@ All examples tested
     "1,234,567,890"
 ```
 
-    
+

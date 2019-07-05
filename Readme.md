@@ -1,6 +1,9 @@
 # Overview
 
-[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js) [![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg)](https://coveralls.io/github/jhonmart/python-format-js) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
+[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js)
+[![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg?branch=master)](https://coveralls.io/github/jhonmart/python-format-js?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
 String formatting like Python's .format()
 
