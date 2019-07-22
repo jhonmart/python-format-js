@@ -180,6 +180,10 @@ test("float_less", () => {
   expect("{:-f}; {:-f}".format(3.14, -3.14)).toEqual("3.140000; -3.140000");
 });
 
+test("number_simple", () => {
+  expect("{:n} é maior que {:n} ".format(3.14, 21)).toEqual("3.14 é maior que 21 ");
+});
+
 test("binary", () => {
   expect("{:b}".format(42)).toEqual("101010");
 });

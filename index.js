@@ -48,10 +48,10 @@ Object.defineProperty(String.prototype, 'format', {
 			elemLetter = (lett, pE, nth) =>{
 				let lett_last = lett[lett.length-1],
 					pad = {
-						for: {d: 10, x: 16, X: 16, o: 8, b: 2},
-						mask: {d: '', x: '0x', X: '0X', o: '0o', b: '0b', '':''}
+						for: {n: 10, d: 10, x: 16, X: 16, o: 8, b: 2},
+						mask: {n: '', d: '', x: '0x', X: '0X', o: '0o', b: '0b', '':''}
 					},
-					nth_pers = nth.replace(/[eEfFgGdxXob#%]/g,''),
+					nth_pers = nth.replace(/[eEfFgGdxXobn#%]/g,''),
 					val;
 
 				if(lett_last){ // Verificar se tem Letra
@@ -61,7 +61,7 @@ Object.defineProperty(String.prototype, 'format', {
 								nth.includes('+')? '+' : '' : '';
 
 						val = exp+(parseFloat(str[pE]).toFixed(6));
-					} else if([...'dxXob'].includes(lett_last)){
+					} else if([...'dxXobn'].includes(lett_last)){
 						let op = (+str[pE])>0? // Numero é positivo
 									nth.includes(' ')? ' ' : // Marcador é espaço e numero é positivo
 									nth.includes('+')? '+' : // Marcador é positivo e numero é positivo
@@ -87,15 +87,15 @@ Object.defineProperty(String.prototype, 'format', {
 
 		let str = param.map(el=>el+''); // toString
 
-		let paramStr = srtSpc.map(p=>{
-			let isNum = +p.replace(/[{}]/g,'');
-			return (p.match(/{(\D+.*?)/g)? [true] : [isNum<str.length])[0];
-		}).filter(e=>!e); 
-
-		let refParam = srtSpc.map(p=>{
-			let isNum = +p.replace(/[{}]/g,'');
-			return p.match(/{(\D+.*?)/g)? isNum : true;
-		}).filter(p=>p);
+		let paramStr = [],
+			refParam = [];
+			
+		srtSpc.map(p => {
+			let isNum = /{(\d+):?/.exec(p);
+			if(isNum)
+				if(+isNum[1] >= str.length) paramStr.push(1);
+				else refParam.push(1);
+		});
 
 		if(paramStr.length)
 			failRun = `ValueError: cannot switch from automatic field numbering to manual field specification`;
@@ -103,7 +103,7 @@ Object.defineProperty(String.prototype, 'format', {
 			failRun = `IndexError: tuple index out of range`;
 		else{
 			srtSpc.map((nth,pE)=>{
-				let lett = /{(\d+)?:?([+_-])?(\W|_)?(\d+)?([eEfFdxXobcGg])?}/.exec(nth),
+				let lett = /{(\d+)?:?([+_-])?(\W|_)?(\d+)?([eEfFdxXobcGgn])?}/.exec(nth),
 					expt = /{.*?([a-zA-Z])?}/.exec(nth);
 					
 				if(expt && expt[1] && !lett && !['eEfFdxXobcGg'].includes(expt)){

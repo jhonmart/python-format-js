@@ -1,5 +1,7 @@
 # Overview
 
+[![NPM](https://nodei.co/npm/python-format-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/python-format-js/)
+
 [![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js) [![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg)](https://coveralls.io/github/jhonmart/python-format-js) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
 String formatting like Python's .format()
@@ -75,7 +77,7 @@ String formatting like Python's .format()
 - [x] 'o' - Octal format
 - [x] 'x' - Hex format, lower case
 - [x] 'X' - Hex format, upper case
-- [ ] 'n' - Number format
+- [x] 'n' - Number format
 - [x] '%' - Percentage format
 - [x] '#' - Makes the format include the 0b prefix in (Octal,Hex,Binary)
 
