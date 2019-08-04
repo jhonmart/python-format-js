@@ -12,8 +12,7 @@ Object.defineProperty(String.prototype, 'format', {
 								.filter(f=>!['{','}'].includes(f))
 								.map(it_mk=>{
 									let params = +it_mk.slice(1) && !it_mk.includes('.')? +it_mk.slice(1) : 
-										/:(\D)+?(\D)*?(\d+)/g.exec(it_mk) || it_mk,
-										valSet = (typeof el=="object"? el[i] : el);
+										/:(\D)+?(\D)*?(\d+)/g.exec(it_mk) || it_mk;
 					
 					if(typeof params=="string") return it_mk;
 					else{
@@ -22,18 +21,18 @@ Object.defineProperty(String.prototype, 'format', {
 						else{
 							let p1 = params[1],
 								fill_elem = ([...'<^>.'].includes(p1)? ' ':p1),
-								sz_sp = (+params[3])-valSet.length;
+								sz_sp = (+params[3])-el[i].length;
 
-							sz_sp = sz_sp<0? valSet.length : sz_sp;
+							sz_sp = sz_sp<0? el[i].length : sz_sp;
 
 							let	space = !p1.includes('.')? 
 											fill_elem.repeat(sz_sp) : '',
-								elem = [space, valSet],
-								srt_crop = valSet.slice(0,+params[3]),
+								elem = [space, el[i]],
+								srt_crop = el[i].slice(0,+params[3]),
 								space_c = fill_elem.repeat(+params[3]),
-								num = Math.floor((space_c.length-valSet.length)/2),
+								num = Math.floor((space_c.length-el[i].length)/2),
 								str_pos = num>0? 
-											fill_elem.repeat(num)+valSet: '',
+											fill_elem.repeat(num)+el[i]: '',
 								elem_center = space_c.replace(RegExp(`.{${str_pos.length || sz_sp}}`), str_pos);
 							
 							i++;
