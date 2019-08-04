@@ -6,18 +6,19 @@ Object.defineProperty(String.prototype, 'format', {
 			removeStr = [], // Array de ajuda para remover valores já usados
 			srtSpc = e.match(/({.*?})/g), // Separação de cada mascara
 			failRun,
-			elemForm = (mask, el) =>{
+			elemForm = (mask, ...el) =>{
 				return !mask.includes('{')? mask : 
 							mask.split(/([{}])/g)
 								.filter(f=>!['{','}'].includes(f))
 								.map(it_mk=>{
 									let params = +it_mk.slice(1) && !it_mk.includes('.')? +it_mk.slice(1) : 
 										/:(\D)+?(\D)*?(\d+)/g.exec(it_mk) || it_mk,
-										valSet = (typeof el=="string"? el : el[i]);
+										valSet = (typeof el=="object"? el[i] : el);
 					
 					if(typeof params=="string") return it_mk;
 					else{
-						if(typeof params=="number") return " ".repeat(params).replace(RegExp(`.{${el[i].length}}`), el[i]);
+						if(typeof params=="number") return " ".repeat(params)
+															  .replace(RegExp(`.{${el[i].length}}`), el[i]);
 						else{
 							let p1 = params[1],
 								fill_elem = ([...'<^>.'].includes(p1)? ' ':p1),
@@ -34,10 +35,10 @@ Object.defineProperty(String.prototype, 'format', {
 								str_pos = num>0? 
 											fill_elem.repeat(num)+valSet: '',
 								elem_center = space_c.replace(RegExp(`.{${str_pos.length || sz_sp}}`), str_pos);
-								
+							
 							i++;
 							return (params.includes('>')? elem : 
-									params.includes('<')? elem.reverse() : 
+							[...'>^.'].filter(ind=>params.includes(ind)).length<1? elem.reverse() : // <
 									params.includes('^')? [elem_center] :  
 									[srt_crop]).join('');
 						}
@@ -132,7 +133,7 @@ Object.defineProperty(String.prototype, 'format', {
 		if(failRun) throw new Error(`Traceback (most recent call last):\n\t"${e}".format(${param.map(el_at=>typeof el_at=="string"? `"${el_at}"` : el_at).join(', ')})\n`+failRun);
 		else{
 			removeStr.reverse().map(pE=>str.splice(pE,1));
-			return elemForm(e, str);
+			return elemForm(e, ...str);
 		}
 	}
 });
