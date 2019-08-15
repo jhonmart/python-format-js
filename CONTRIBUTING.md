@@ -18,13 +18,12 @@ Implements params:
 
 - Run the test
 
-    ```console
-    $ npm test
-    ```
+  ```console
+  $ npm test
+  ```
 
-    or
+  or
 
-    ```console
-    $ yarn test
-    ```
-
+  ```console
+  $ yarn test
+  ```

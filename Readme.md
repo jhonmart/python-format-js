@@ -59,14 +59,14 @@ String formatting like Python's .format()
 - [x] '<' - Left aligns the result (within the available space)
 - [x] '>' - Right aligns the result (within the available space)
 - [x] '^' - Center aligns the result (within the available space)
-- [ ] '=' - Places the sign to the left most position
+- [x] '=' - Places the sign to the left most position
 - [x] '+' - Use a plus sign to indicate if the result is positive or negative
 - [x] '-' - Use a minus sign for negative values only
 - [x] ' ' - Use a leading space for positive numbers
 - [x] ',' - Use a comma as a thousand separator
 - [x] '\_' - Use a underscore as a thousand separator
 - [x] 'b' - Binary format
-- [ ] 'c' - Converts the value into the corresponding unicode character
+- [x] 'c' - Converts the value into the corresponding unicode character
 - [x] 'd' - Decimal format
 - [x] 'e' - Scientific format, with a lower case e
 - [x] 'E' - Scientific format, with an upper case E
