@@ -89,7 +89,7 @@ String formatting like Python's .format()
 
 [More Examples](./Examples.md)
 
-    - simples_change:
+    - Simples Change:
 
 ```javascript
 "{} {}".format("Jhon", "Mart");
@@ -97,7 +97,23 @@ String formatting like Python's .format()
 ("Jhon Mart");
 ```
 
-    - one_arg_int:
+    - Advance Change Array:
+
+```javascript
+"My name is {0} and i have {1} years old!".format(["Jônatas", 21]);
+
+("My name is Jônatas and i have 21 years old!");
+```
+
+    - Advance Change Object:
+
+```javascript
+"Your name is {name} and you have {age} years old!".format({name: "Jônatas", age: 21});
+
+("My name is Jônatas and i have 21 years old!");
+```
+
+    - One Argument type Number:
 
 ```javascript
 "{} ".format(2);
@@ -105,7 +121,7 @@ String formatting like Python's .format()
 ("2 ");
 ```
 
-    - one_arg_float:
+    - One Argument type Float:
 
 ```javascript
 
@@ -114,7 +130,7 @@ String formatting like Python's .format()
  "3.14 "
 ```
 
-    - one_arg_bool:
+    - One Argument type Boolean:
 
 ```javascript
  "{} ".format(true))
@@ -122,7 +138,7 @@ String formatting like Python's .format()
  "true "
 ```
 
-    - multiple_type_arg:
+    - Multiple type Argument:
 
 ```javascript
 "{} {} {}".format(2, 3.14, true);
@@ -130,103 +146,327 @@ String formatting like Python's .format()
 ("2 3.14 true");
 ```
 
-    - overflow_srt_length_center:
+    - Overflow String Align Right:
 
 ```javascript
 "{:^3}".format("Gustavo");
 
 ("Gustavo");
 ```
+	
+    - Overflow String Align Center:
 
-    - align_left:
+```javascript
+"{:^3}".format("Gustavo");
+
+("Gustavo");
+```
+	
+    - Align Left:
 
 ```javascript
 "{:<6}".format("oii");
 
 ("oii   ");
 ```
-
-    - align_right:
+	
+    - Align Right:
 
 ```javascript
 "{:>6}".format("oii");
 
 ("   oii");
 ```
+	
+    - Align Center Incomplete:
 
-    - crop:
+```javascript
+"{:^6}".format("oii");
+
+(" oii  ");
+```
+	
+    - Align Center Complete:
+
+```javascript
+"{:^7}".format("oii");
+
+("  oii  ");
+```
+	
+    - Crop:
 
 ```javascript
 "{:.7}".format("Jonatas Martins");
 
 ("Jonatas");
 ```
-
-    - size_string:
+	
+    - Size String:
 
 ```javascript
 "{:10}".format("test");
 
 ("test      ");
 ```
+	
+    - Char Append Left:
 
-    - char_append_right:
+```javascript
+"{:_<7}".format("Jhon");
+
+("Jhon___");
+```
+	
+    - Char Append Right:
 
 ```javascript
 "{:_>7}".format("Jhon");
 
 ("___Jhon");
 ```
-
-    - char_append_center_incomplete:
+	
+    - Char Append Center Incomplete:
 
 ```javascript
 "{:_^7}".format("Jhon");
 
 ("_Jhon__");
 ```
-
-    - multiple_params_stretch:
-
-```javascript
-"{:<5} {:>8}".format("Jhon", "Mart");
-
-("Jhon      Mart");
-```
-
-    - multiple_params_join:
+	
+    - String and param left align:
 
 ```javascript
-"{:>5} {:<8}".format("Jhon", "Mart");
+"Olá {:<8}".format("Jhon");
 
-(" Jhon Mart    ");
+("Olá Jhon    ");
 ```
-
-    - overflow_srt_length_multiple_params:
+	
+    - String and param right align:
 
 ```javascript
-"{:_<6} {:<28} {:>1} {:^9}".format("a22hhfdf123g4", "x  1 teste", "x2", "x3");
+"Olá {:>8}".format("Jhon");
 
-("a22hhfdf123g4 x  1 teste                   x2    x3    ");
+("Olá     Jhon");
 ```
-
-    - param_and_string_combin:
+	
+    - String and param center align:
 
 ```javascript
-"Olá {}, sua idade é {:_>5}".format("Jhon", "21");
+"Olá {:^8}".format("Jhon");
 
-("Olá Jhon, sua idade é ___21");
+("Olá   Jhon  ");
 ```
-
-    - center_ast:
+	
+    - Float:
 
 ```javascript
-"{:*^30}".format("centered");
+"{:f}; {:f}".format(3.14, -3.14);
 
-("***********centered***********");
+("3.140000; -3.140000");
 ```
+	
+    - Float Space:
 
-    - thousands_separator:
+```javascript
+"{: f}; {: f}".format(3.14, -3.14);
+
+(" 3.140000; -3.140000");
+```
+	
+    - Float Align:
+
+```javascript
+"{:<15f}; {: f}".format(3.14, -3.14);
+
+("3.140000       ; -3.140000");
+```
+	
+    - Float Plus:
+
+```javascript
+"{:+f}; {:+f}".format(3.14, -3.14);
+
+("+3.140000; -3.140000");
+```
+	
+    - Float Less:
+
+```javascript
+"{:-f}; {:-f}".format(3.14, -3.14);
+
+("3.140000; -3.140000");
+```
+	
+    - Number Simple:
+
+```javascript
+"{:n} é maior que {:n} ".format(3.14, 21);
+
+("3.14 é maior que 21 ");
+```
+	
+    - Binary:
+
+```javascript
+"{:b}".format(42);
+
+("101010");
+```
+	
+    - Binary Align:
+
+```javascript
+"{:>4b}".format(5);
+
+(" 101");
+```
+	
+    - Binary Mask:
+
+```javascript
+"{:#b}".format(42);
+
+("0b101010");
+```
+	
+    - Octal:
+
+```javascript
+"{:o}".format(42);
+
+("52");
+```
+	
+    - Octal Mask:
+
+```javascript
+"{:#o}".format(42);
+
+("0o52");
+```
+	
+    - Octal Mask Sign:
+
+```javascript
+"{:-o}".format(42);
+
+("+52");
+```
+	
+    - Octal Mask Space:
+
+```javascript
+"{: o}".format(42);
+
+(" 52");
+```
+	
+    - Number Octal Positive:
+
+```javascript
+"{:+#o}".format(4233);
+
+("+0o10211");
+```
+	
+    - Number Octal Negative:
+
+```javascript
+"{:-#o}".format(-4233);
+
+("-0o10211");
+```
+	
+    - Hexadecimal:
+
+```javascript
+"{:x}".format(42);
+
+("2a");
+```
+	
+    - Hexadecimal Mask:
+
+```javascript
+"{:#x}".format(42);
+
+("0x2a");
+```
+	
+    - Hexadecimal Mask Upper Case:
+
+```javascript
+"{:#X}".format(42);
+
+("0X2A");
+```
+	
+    - Decimal Number:
+
+```javascript
+"{:d}".format(42);
+
+("42");
+```
+	
+    - Exp:
+
+```javascript
+"{:e}".format(4233);
+
+("4.233e+3");
+```
+	
+    - Exp Upper Case:
+
+```javascript
+"{:E}".format(4233);
+
+("4.233E+3");
+```
+	
+    - Exp Size Over:
+
+```javascript
+"{:<15e}".format(4233);
+
+("4.233e+3       ");
+```
+	
+    - Percent:
+
+```javascript
+"{:%}".format(0.065);
+
+("6.500000%");
+```
+	
+    - All data:
+
+```javascript
+"{:g}".format('Hello World');
+
+("Hello World");
+```
+	
+    - Align All:
+
+```javascript
+"{:<5g}".format('T');
+
+("T    ");
+```
+	
+    - All Upper Case:
+
+```javascript
+"{:G}".format("Hello World");
+
+("HELLO WORLD");
+```
+	
+    - Thousands Separator:
 
 ```javascript
 "{:,}".format(1234567890);

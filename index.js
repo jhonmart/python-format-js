@@ -7,17 +7,18 @@ Object.defineProperty(String.prototype, 'format', {
 			srtSpc = e.match(/({.*?})/g), // Separação de cada mascara
 			failRun,
 			elemForm = (mask, ...el) =>{
-				return !mask.includes('{')? mask : 
-							mask.split(/([{}])/g)
-								.filter(f=>!['{','}'].includes(f))
-								.map(it_mk=>{
-									let params = +it_mk.slice(1) && !it_mk.includes('.')? +it_mk.slice(1) : 
-										/:(\D)+?(\D)*?(\d+)/g.exec(it_mk) || it_mk;
+				if(!mask.includes('{')) return mask;
+
+				mask.match(/({.*?})/g)
+					.map(it_mk=>{
+						let bs_mk = it_mk.replace(/[}{]/g,'');
+						
+						let params = +bs_mk.slice(1) && !bs_mk.includes('.')? 
+							+bs_mk.slice(1) : 
+							/:(\D)+?(\D)*?(\d+)/g.exec(bs_mk);
 					
-					if(typeof params=="string") return it_mk;
-					else{
-						if(typeof params=="number") return " ".repeat(params)
-															  .replace(RegExp(`.{${el[i].length}}`), el[i]);
+						if(typeof params=="number") mask = mask.replace(it_mk, " ".repeat(params)
+															  .replace(RegExp(`.{${el[i].length}}`), el[i]));
 						else{
 							let p1 = params[1],
 								fill_elem = ([...'<^>.'].includes(p1)? ' ':p1),
@@ -36,14 +37,14 @@ Object.defineProperty(String.prototype, 'format', {
 								elem_center = space_c.replace(RegExp(`.{${str_pos.length || sz_sp}}`), str_pos);
 							
 							i++;
-							return (params.includes('>')? elem : 
+							mask = mask.replace(it_mk, (params.includes('>')? elem : 
 							[...'>^.'].filter(ind=>params.includes(ind)).length<1? elem.reverse() : // <
 									params.includes('^')? [elem_center] :  
-									[srt_crop]).join('');
-						}
-					}
-							
-				}).join('');
+									[srt_crop]).join(''));
+						}	
+				});
+
+				return mask;
 			},
 			elemLetter = (lett, pE, nth) =>{
 				let lett_last = lett[lett.length-1],
@@ -85,6 +86,18 @@ Object.defineProperty(String.prototype, 'format', {
 				}
 			};
 
+		if(typeof param[0]=="object"){
+			srtSpc.map(ix=>e=e.replace(ix, param[0][/{.*?(\w+)?}/.exec(ix)[1]]));
+			return e;
+		}
+
+		let searchRefs = srtSpc.map(el=>{let v = /{(\w+)/.exec(el);return v? +v[1] : v});
+
+		if(!searchRefs.filter(p=>isNaN(+p) || p==null).length){
+			searchRefs.map((ix, id)=>e=e.replace(srtSpc[id], param[ix]));
+			return e;
+		}
+
 		let str = param.map(el=>el+''); // toString
 
 		let paramStr = [],
@@ -92,9 +105,14 @@ Object.defineProperty(String.prototype, 'format', {
 			
 		srtSpc.map(p => {
 			let isNum = /{(\d+):?/.exec(p);
-			if(isNum)
+			if(isNum){
 				if(+isNum[1] >= str.length) paramStr.push(1);
-				else refParam.push(1);
+				else{
+					refParam.push(1);
+					let resp = p.replace(isNum[1],'').format(str[isNum[1]]);
+					e = e.replace(p, resp);
+				}
+			}
 		});
 
 		if(paramStr.length)
@@ -115,8 +133,6 @@ Object.defineProperty(String.prototype, 'format', {
 					let div = str[pE].split(/(?=(?:...)*$)/).join(lett[3]);
 					e = e.replace(nth, div); // Change for value
 					removeStr.push(pE);
-				} else if(lett && lett[1] && lett[1].length+2==nth.length){ // Saber se existe um numero antes do dois pontos {Numero:}
-					e = e.replace(nth, str[lett[1]]); // Change for value
 				} else if(lett && (+lett[4])<=str[pE].length && !lett.includes('.')){ // Mascara menor do que o valor
 					e = e.replace(nth, str[pE]); // Change for value
 					removeStr.push(pE);
