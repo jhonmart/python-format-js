@@ -1,8 +1,7 @@
 "use strict"
 Object.defineProperty(String.prototype, 'format', {
 	value: function(...param) {
-		let i = 0, // Indice para ajudar a percorrer valores
-			e = this, // Entrada
+		let e = this, // Entrada
 			removeStr = [], // Array de ajuda para remover valores já usados
 			srtSpc = e.match(/({.*?})/g), // Separação de cada mascara
 			failRun,
@@ -10,7 +9,7 @@ Object.defineProperty(String.prototype, 'format', {
 				if(!mask.includes('{')) return mask;
 
 				mask.match(/({.*?})/g)
-					.map(it_mk=>{
+					.map((it_mk, i)=>{
 						let bs_mk = it_mk.replace(/[}{]/g,'');
 						
 						let params = +bs_mk.slice(1) && !bs_mk.includes('.')? 
@@ -91,16 +90,15 @@ Object.defineProperty(String.prototype, 'format', {
 			return e;
 		}
 
-		let searchRefs = srtSpc.map(el=>{let v = /{(\w+)/.exec(el);return v? +v[1] : v});
+		let searchRefs = srtSpc.map(el=>{let v = /{(\w+):?}/.exec(el);return v? +v[1] : v});
 
 		if(!searchRefs.filter(p=>isNaN(+p) || p==null).length){
 			searchRefs.map((ix, id)=>e=e.replace(srtSpc[id], param[ix]));
 			return e;
 		}
 
-		let str = param.map(el=>el+''); // toString
-
-		let paramStr = [],
+    let str = param.map(el=>el+''), // toString
+      paramStr = [],
 			refParam = [];
 			
 		srtSpc.map(p => {
