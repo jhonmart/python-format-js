@@ -127,7 +127,7 @@ String formatting like Python's .format()
 
  "{} ".format(3.14))
 
- "3.14 "
+ ("3.14 ");
 ```
 
     - One Argument type Boolean:
@@ -135,7 +135,7 @@ String formatting like Python's .format()
 ```javascript
  "{} ".format(true))
 
- "true "
+ ("true ")
 ```
 
     - Multiple type Argument:
