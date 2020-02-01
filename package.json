@@ -1,6 +1,6 @@
 {
   "name": "python-format-js",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "description": "String formatting like Python's  .format()",
   "main": "index.js",
   "scripts": {
