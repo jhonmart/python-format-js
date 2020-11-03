@@ -309,3 +309,7 @@ test("Fail char not set", () => {
     }
     expect(captured).toBe(`Fail`);
 });
+
+test("No replacement field", () => {
+  expect("123".format()).toEqual("123");
+});

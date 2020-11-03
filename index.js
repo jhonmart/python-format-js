@@ -88,6 +88,10 @@ Object.defineProperty(String.prototype, 'format', {
                             }
                         };
 
+                    if (!srtSpc) {
+                        return e;
+                    }
+
                     if (typeof param[0] == "object") {
                         srtSpc.map(ix => e = e.replace(ix, param[0][/{.*?(\w+)?}/.exec(ix)[1]]));
                         return e;
