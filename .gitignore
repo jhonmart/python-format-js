@@ -2,3 +2,5 @@
 /coverage
 yarn-error.log
 teste.js
+yarn.lock
+package-lock.json
