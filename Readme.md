@@ -2,7 +2,14 @@
 
 [![NPM](https://nodei.co/npm/python-format-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/python-format-js/)
 
-[![Build Status](https://travis-ci.org/jhonmart/python-format-js.svg?branch=master)](https://travis-ci.org/jhonmart/python-format-js) [![Coverage Status](https://coveralls.io/repos/github/jhonmart/python-format-js/badge.svg)](https://coveralls.io/github/jhonmart/python-format-js) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
+
+<a href="https://github.com/jhonmart/python-format-js/commits">
+  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-functions.svg">
+  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-lines.svg">
+  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-branches.svg">
+</a>
+<br>
 
 String formatting like Python's .format()
 
@@ -13,7 +20,6 @@ String formatting like Python's .format()
 #### Node
 
 1.  Install:
-
 
     ```console
     $ npm install python-format-js
@@ -108,7 +114,10 @@ String formatting like Python's .format()
     - Advance Change Object:
 
 ```javascript
-"Your name is {name} and you have {age} years old!".format({name: "Jônatas", age: 21});
+"Your name is {name} and you have {age} years old!".format({
+  name: "Jônatas",
+  age: 21,
+});
 
 ("My name is Jônatas and i have 21 years old!");
 ```
@@ -153,7 +162,7 @@ String formatting like Python's .format()
 
 ("Gustavo");
 ```
-	
+
     - Overflow String Align Center:
 
 ```javascript
@@ -161,7 +170,7 @@ String formatting like Python's .format()
 
 ("Gustavo");
 ```
-	
+
     - Align Left:
 
 ```javascript
@@ -169,7 +178,7 @@ String formatting like Python's .format()
 
 ("oii   ");
 ```
-	
+
     - Align Right:
 
 ```javascript
@@ -177,7 +186,7 @@ String formatting like Python's .format()
 
 ("   oii");
 ```
-	
+
     - Align Center Incomplete:
 
 ```javascript
@@ -185,7 +194,7 @@ String formatting like Python's .format()
 
 (" oii  ");
 ```
-	
+
     - Align Center Complete:
 
 ```javascript
@@ -193,7 +202,7 @@ String formatting like Python's .format()
 
 ("  oii  ");
 ```
-	
+
     - Crop:
 
 ```javascript
@@ -201,7 +210,7 @@ String formatting like Python's .format()
 
 ("Jonatas");
 ```
-	
+
     - Size String:
 
 ```javascript
@@ -209,7 +218,7 @@ String formatting like Python's .format()
 
 ("test      ");
 ```
-	
+
     - Char Append Left:
 
 ```javascript
@@ -217,7 +226,7 @@ String formatting like Python's .format()
 
 ("Jhon___");
 ```
-	
+
     - Char Append Right:
 
 ```javascript
@@ -225,7 +234,7 @@ String formatting like Python's .format()
 
 ("___Jhon");
 ```
-	
+
     - Char Append Center Incomplete:
 
 ```javascript
@@ -233,7 +242,7 @@ String formatting like Python's .format()
 
 ("_Jhon__");
 ```
-	
+
     - String and param left align:
 
 ```javascript
@@ -241,7 +250,7 @@ String formatting like Python's .format()
 
 ("Olá Jhon    ");
 ```
-	
+
     - String and param right align:
 
 ```javascript
@@ -249,7 +258,7 @@ String formatting like Python's .format()
 
 ("Olá     Jhon");
 ```
-	
+
     - String and param center align:
 
 ```javascript
@@ -257,7 +266,7 @@ String formatting like Python's .format()
 
 ("Olá   Jhon  ");
 ```
-	
+
     - Float:
 
 ```javascript
@@ -265,7 +274,7 @@ String formatting like Python's .format()
 
 ("3.140000; -3.140000");
 ```
-	
+
     - Float Space:
 
 ```javascript
@@ -273,7 +282,7 @@ String formatting like Python's .format()
 
 (" 3.140000; -3.140000");
 ```
-	
+
     - Float Align:
 
 ```javascript
@@ -281,7 +290,7 @@ String formatting like Python's .format()
 
 ("3.140000       ; -3.140000");
 ```
-	
+
     - Float Plus:
 
 ```javascript
@@ -289,7 +298,7 @@ String formatting like Python's .format()
 
 ("+3.140000; -3.140000");
 ```
-	
+
     - Float Less:
 
 ```javascript
@@ -297,7 +306,7 @@ String formatting like Python's .format()
 
 ("3.140000; -3.140000");
 ```
-	
+
     - Number Simple:
 
 ```javascript
@@ -305,7 +314,7 @@ String formatting like Python's .format()
 
 ("3.14 é maior que 21 ");
 ```
-	
+
     - Binary:
 
 ```javascript
@@ -313,7 +322,7 @@ String formatting like Python's .format()
 
 ("101010");
 ```
-	
+
     - Binary Align:
 
 ```javascript
@@ -321,7 +330,7 @@ String formatting like Python's .format()
 
 (" 101");
 ```
-	
+
     - Binary Mask:
 
 ```javascript
@@ -329,7 +338,7 @@ String formatting like Python's .format()
 
 ("0b101010");
 ```
-	
+
     - Octal:
 
 ```javascript
@@ -337,7 +346,7 @@ String formatting like Python's .format()
 
 ("52");
 ```
-	
+
     - Octal Mask:
 
 ```javascript
@@ -345,7 +354,7 @@ String formatting like Python's .format()
 
 ("0o52");
 ```
-	
+
     - Octal Mask Sign:
 
 ```javascript
@@ -353,7 +362,7 @@ String formatting like Python's .format()
 
 ("+52");
 ```
-	
+
     - Octal Mask Space:
 
 ```javascript
@@ -361,7 +370,7 @@ String formatting like Python's .format()
 
 (" 52");
 ```
-	
+
     - Number Octal Positive:
 
 ```javascript
@@ -369,7 +378,7 @@ String formatting like Python's .format()
 
 ("+0o10211");
 ```
-	
+
     - Number Octal Negative:
 
 ```javascript
@@ -377,7 +386,7 @@ String formatting like Python's .format()
 
 ("-0o10211");
 ```
-	
+
     - Hexadecimal:
 
 ```javascript
@@ -385,7 +394,7 @@ String formatting like Python's .format()
 
 ("2a");
 ```
-	
+
     - Hexadecimal Mask:
 
 ```javascript
@@ -393,7 +402,7 @@ String formatting like Python's .format()
 
 ("0x2a");
 ```
-	
+
     - Hexadecimal Mask Upper Case:
 
 ```javascript
@@ -401,7 +410,7 @@ String formatting like Python's .format()
 
 ("0X2A");
 ```
-	
+
     - Decimal Number:
 
 ```javascript
@@ -409,7 +418,7 @@ String formatting like Python's .format()
 
 ("42");
 ```
-	
+
     - Exp:
 
 ```javascript
@@ -417,7 +426,7 @@ String formatting like Python's .format()
 
 ("4.233e+3");
 ```
-	
+
     - Exp Upper Case:
 
 ```javascript
@@ -425,7 +434,7 @@ String formatting like Python's .format()
 
 ("4.233E+3");
 ```
-	
+
     - Exp Size Over:
 
 ```javascript
@@ -433,7 +442,7 @@ String formatting like Python's .format()
 
 ("4.233e+3       ");
 ```
-	
+
     - Percent:
 
 ```javascript
@@ -441,23 +450,23 @@ String formatting like Python's .format()
 
 ("6.500000%");
 ```
-	
+
     - All data:
 
 ```javascript
-"{:g}".format('Hello World');
+"{:g}".format("Hello World");
 
 ("Hello World");
 ```
-	
+
     - Align All:
 
 ```javascript
-"{:<5g}".format('T');
+"{:<5g}".format("T");
 
 ("T    ");
 ```
-	
+
     - All Upper Case:
 
 ```javascript
@@ -465,7 +474,7 @@ String formatting like Python's .format()
 
 ("HELLO WORLD");
 ```
-	
+
     - Thousands Separator:
 
 ```javascript

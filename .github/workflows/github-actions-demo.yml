@@ -1,0 +1,43 @@
+name: Deploy project
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run unitary test
+        run: yarn test
+
+      - name: Config test
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: coverage
+          retention-days: 3
+
+      - name: Generation badges
+        run: yarn ge:badges
+
+      - name: Deploy badges
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: |
+            badges/*.svg
+          commit-msg: deploy system coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}

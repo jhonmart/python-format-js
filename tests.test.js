@@ -1,27 +1,37 @@
-require("./index");
+const Format = require("./index");
 
 test("Simples Change", () => {
-  expect("My fisrt name is {} and last {}"
-    .format("Jhon", "Mart"))
-  .toEqual("My fisrt name is Jhon and last Mart");
+  expect("My fisrt name is {} and last {}".format("Jhon", "Mart")).toEqual(
+    "My fisrt name is Jhon and last Mart"
+  );
 });
 
 test("Advance Change Array", () => {
-  expect("My name is {0} and i have {1} years old!"
-    .format(["Jônatas", 21]))
-  .toEqual("My name is Jônatas and i have 21 years old!");
+  expect(
+    "My name is {0} and i have {1} years old!".format(["Jônatas", 21])
+  ).toEqual("My name is Jônatas and i have 21 years old!");
 });
 
 test("Advance Change Object", () => {
-  expect("Your name is {name} and you have {age} years old!"
-    .format({name: "Jônatas", age: 21}))
-  .toEqual("Your name is Jônatas and you have 21 years old!");
+  expect(
+    "Your name is {name:<10} and you have {age} years old!".format({
+      name: "Jônatas",
+      age: 21,
+    })
+  ).toEqual("Your name is Jônatas    and you have 21 years old!");
+});
+
+test("Advanced object change position", () => {
+  expect(
+    "Your name is {name} and you have {age} years old!".format({
+      name: "Jônatas",
+      age: 21,
+    })
+  ).toEqual("Your name is Jônatas and you have 21 years old!");
 });
 
 test("One Argument type Number", () => {
-  expect("You have {} things"
-    .format(2))
-  .toEqual("You have 2 things");
+  expect("You have {} things".format(2)).toEqual("You have 2 things");
 });
 
 test("One Argument type Float", () => {
@@ -113,68 +123,64 @@ test("Overflow params", () => {
   var captured = null;
   try {
     expect("{:>5} {:<8}".format("Jhon")).toEqual(null);
-  } catch(e) {
-    captured = 'Fail';
+  } catch (e) {
+    captured = "Fail";
   }
-  expect(captured).toBe(`Fail`);
+  expect(captured).toBe("Fail");
 });
 
 test("String and param left align", () => {
-  expect("Olá {:<8}".format("Jhon")).toEqual("Olá Jhon    ");
+  expect("Hy {:<8}".format("Jhon")).toEqual("Hy Jhon    ");
 });
 
 test("String and param right align", () => {
-  expect("Olá {:>8}".format("Jhon")).toEqual("Olá     Jhon");
+  expect("Hy {:>8}".format("Jhon")).toEqual("Hy     Jhon");
 });
 
 test("String and param center align", () => {
-  expect("Olá {:^8}".format("Jhon")).toEqual("Olá   Jhon  ");
+  expect("Hy {:^8}".format("Jhon")).toEqual("Hy   Jhon  ");
 });
 
 test("String align mark and Number", () => {
-  expect("Olá {:_>5}, sua idade é {}".format("Jhon", 21)).toEqual(
-    "Olá _Jhon, sua idade é 21"
+  expect("Hy {:_>5}, your age is {}".format("Jhon", 21)).toEqual(
+    "Hy _Jhon, your age is 21"
   );
 });
 test("Number align mark and String", () => {
-  expect("Olá {}, sua idade é {:_>5}".format("Jhon", 21)).toEqual(
-    "Olá Jhon, sua idade é ___21"
+  expect("Hy {}, your age is {:_>5}".format("Jhon", 21)).toEqual(
+    "Hy Jhon, your age is ___21"
   );
 });
 test("Reference Position Definition", () => {
-  expect("Minha idade é {1} e meu nome é {0}".format("Jhon", "21")).toEqual(
-    "Minha idade é 21 e meu nome é Jhon"
+  expect("My age is {1} and my name is {0}".format("Jhon", "21")).toEqual(
+    "My age is 21 and my name is Jhon"
   );
 });
 test("Reference Position Definition Multiple Type", () => {
   expect(
-    "Minha idade é {1} e meu nome é {0}, tenho algo mais que {1}".format(
+    "My age is {1} and my name is {0}, i have something more than {1}".format(
       "Jhon",
       21
     )
-  ).toEqual("Minha idade é 21 e meu nome é Jhon, tenho algo mais que 21");
+  ).toEqual("My age is 21 and my name is Jhon, i have something more than 21");
 });
 
 test("Ref Not Defined", () => {
-    var captured = null;
-    try {
-      expect("{:>2} {2}".format("x2", "x3")).toEqual(null);
-    } catch(e) {
-      captured = 'Fail';
-    }
-    expect(captured).toBe(`Fail`);
+  var captured = null;
+  try {
+    expect("{:>2} {2}".format("x2", "x3")).toEqual(null);
+  } catch (e) {
+    captured = "Fail";
+  }
+  expect(captured).toBe("Fail");
 });
 
 test("Reference var and align", () => {
-  expect("{:+d} {:<4}".format(32, "x3")).toEqual(
-    "+32 x3  "
-  );
+  expect("{:+d} {:<4}".format(32, "x3")).toEqual("+32 x3  ");
 });
 
 test("Right answer from above test and Reference var and align of set var", () => {
-  expect("{:+d} {1:<4}".format(32, "x3")).toEqual(
-    "+32 x3  "
-  );
+  expect("{:+d} {1:<4}".format(32, "x3")).toEqual("+32 x3  ");
 });
 
 test("Center Ast", () => {
@@ -191,7 +197,9 @@ test("Float Space", () => {
   expect("{: f}; {: f}".format(3.14, -3.14)).toEqual(" 3.140000; -3.140000");
 });
 test("Float Align", () => {
-  expect("{:<15f}; {: f}".format(3.14, -3.14)).toEqual("3.140000       ; -3.140000");
+  expect("{:<15f}; {: f}".format(3.14, -3.14)).toEqual(
+    "3.140000       ; -3.140000"
+  );
 });
 
 test("Float Plus", () => {
@@ -203,7 +211,9 @@ test("Float Less", () => {
 });
 
 test("Number Simple", () => {
-  expect("{:n} é maior que {:n} ".format(3.14, 21)).toEqual("3.14 é maior que 21 ");
+  expect("{:n} é maior que {:n} ".format(3.14, 21)).toEqual(
+    "3.14 é maior que 21 "
+  );
 });
 
 test("Binary", () => {
@@ -226,7 +236,7 @@ test("Octal Mask", () => {
 });
 
 test("Octal Mask Sign", () => {
-  expect("{:-o}".format(42)).toEqual("+52");
+  expect("{:-o}".format(42)).toEqual("52");
 });
 
 test("Octal Mask Space", () => {
@@ -258,32 +268,27 @@ test("Decimal Number", () => {
 });
 
 test("Exp", () => {
-  expect("{:e}".format(4233)).toEqual("4.233e+3");
+  expect("{:e}".format(4233)).toEqual("4.233000e+3");
 });
 
 test("Exp Upper Case", () => {
-  expect("{:E}".format(4233)).toEqual("4.233E+3");
+  expect("{:E}".format(4233)).toEqual("4.233000E+3");
 });
 
 test("Exp Size Over", () => {
-  expect("{:<15e}".format(4233)).toEqual("4.233e+3       ");
+  expect("{:<15e}".format(4233)).toEqual("4.233000e+3    ");
 });
-
 
 test("Percent", () => {
   expect("{:%}".format(0.065)).toEqual("6.500000%");
 });
 
 test("All data", () => {
-  expect("{:g}".format('Hello World')).toEqual("Hello World");
+  expect("{:g}".format("Hello World")).toEqual("Hello World");
 });
 
 test("Align All", () => {
-  expect("{:<5g}".format('T')).toEqual("T    ");
-});
-
-test("All Upper Case", () => {
-  expect("{:G}".format("Hello World")).toEqual("HELLO WORLD");
+  expect("{:<5g}".format("T")).toEqual("T    ");
 });
 
 test("Thousands Separator", () => {
@@ -291,25 +296,57 @@ test("Thousands Separator", () => {
 });
 
 test("Fail char", () => {
-    var captured = null;
-    try {
-      expect("{:a}".format(12345)).toEqual(null);
-    } catch(e) {
-      captured = 'Fail';
-    }
-    expect(captured).toBe(`Fail`);
+  var captured = null;
+  try {
+    expect("{:a}".format(12345)).toEqual(null);
+  } catch (e) {
+    captured = "Fail";
+  }
+  expect(captured).toBe("Fail");
 });
 
 test("Fail char not set", () => {
-    var captured = null;
-    try {
-      expect("{:j}".format('less')).toEqual(null);
-    } catch(e) {
-      captured = 'Fail';
-    }
-    expect(captured).toBe(`Fail`);
+  var captured = null;
+  try {
+    expect("{:j}".format("less")).toEqual(null);
+  } catch (e) {
+    captured = "Fail";
+  }
+  expect(captured).toBe("Fail");
 });
 
 test("No replacement field", () => {
   expect("123".format()).toEqual("123");
+});
+
+test("Import function test", () => {
+  expect(Format("{:<5g}", "T")).toEqual("T    ");
+});
+
+// #32 from @Viatorus
+test("index error if param index is out range:32", () => {
+  var captured = null;
+  try {
+    expect("{}".format()).toEqual(null);
+  } catch (e) {
+    captured = "Fail";
+  }
+  expect(captured).toBe("Fail");
+});
+
+// #33 from @Viatorus
+test("Accessing arguments:33", () => {
+  expect("{[1]}".format([1, 2, 3])).toEqual("2");
+});
+
+// #41 from @mazito
+test("zeros is missing:41", () => {
+  expect("{:03d}".format(7)).toEqual("007");
+});
+
+// #42 from @shooter01
+test("Problem with formatting:42", () => {
+  expect("001 {0: >7}  {1:74.2f}     ".format(1, 3.0)).toEqual(
+    "001       1                                                                        3.00     "
+  );
 });

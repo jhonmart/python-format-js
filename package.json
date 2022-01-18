@@ -1,12 +1,11 @@
 {
   "name": "python-format-js",
-  "version": "1.3.9",
+  "version": "1.4.0",
   "description": "String formatting like Python's  .format()",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test": "jest --coverage",
+    "ge:badges": "jest-coverage-badges --output badges"
   },
   "repository": {
     "type": "git",
@@ -29,8 +28,19 @@
   },
   "homepage": "https://github.com/jhonmart/python-format-js#readme",
   "devDependencies": {
-    "coveralls": "^3.1.0",
+    "jest-coverage-badges": "^1.1.2",
     "jest": "^24.8.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ]
+  }
 }
