@@ -32,12 +32,15 @@ Object.defineProperty(String.prototype, "format", {
       const kargs = ALL_REGEXP.exec(pattern) || ALL_REGEXP.exec(pattern);
       const wargs = regExpBasic.exec(pattern);
       // Insert values (one 2 one / array / object)
-      const INDEX_VAR =
-        (wargs ? wargs[REF] : kargs ? kargs[REF] : patt_index) || patt_index;
+      
+      const INDEX_VAR = (wargs ? wargs[REF] : kargs ? kargs[REF] : patt_index) || patt_index;
       let NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       let ACTUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       // Verify sintax/semantic
-      if (!ACTUAL_VALUE) throw new Error(`Replacement index ${INDEX_VAR} out of range for positional args tuple`);
+      if (!ACTUAL_VALUE)
+        throw new Error(
+          `Replacement index ${INDEX_VAR} out of range for positional args tuple`
+        );
       if (kargs) {
         const LETTER =
           (!kargs[FILL_CHAR]
@@ -105,7 +108,9 @@ Object.defineProperty(String.prototype, "format", {
                 ACTUAL_VALUE = " " + ACTUAL_VALUE;
                 break;
               case ",":
-                ACTUAL_VALUE = NATUAL_VALUE.toLocaleString("en");
+                ACTUAL_VALUE = NATUAL_VALUE.toString()
+                  .split(/(?=(?:...)*$)/)
+                  .join(kargs[FILL_CHAR]);
                 break;
               case "%":
                 ACTUAL_VALUE =

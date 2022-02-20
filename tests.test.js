@@ -320,7 +320,7 @@ test("No replacement field", () => {
 });
 
 test("Import function test", () => {
-  expect(Format("{:<5g}", "T")).toEqual("T    ");
+  expect(Format("{:E}", 4233)).toEqual("4.233000E+3");
 });
 
 // #32 from @Viatorus
