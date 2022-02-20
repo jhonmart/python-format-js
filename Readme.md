@@ -2,14 +2,12 @@
 
 [![NPM](https://nodei.co/npm/python-format-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/python-format-js/)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
-<a href="https://github.com/jhonmart/python-format-js/commits">
-  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-functions.svg">
-  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-lines.svg">
-  <img align="left" src="https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-branches.svg">
-</a>
-<br>
+[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-functions.svg)](https://github.com/jhonmart/python-format-js/commits)
+[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-lines.svg)](https://github.com/jhonmart/python-format-js/commits)
+[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-branches.svg)](https://github.com/jhonmart/python-format-js/commits)
 
 String formatting like Python's .format()
 
@@ -21,32 +19,43 @@ String formatting like Python's .format()
 
 1.  Install:
 
-    ```console
-    $ npm install python-format-js
+    ```bash
+    npm install python-format-js
     ```
 
     or
 
-    ```console
-    $ yarn add python-format-js
+    ```bash
+    yarn add python-format-js
     ```
 
 2.  Require:
 
     ```javascript
+    // Module and prototype
     const format = require("python-format-js");
-    ```
-
-## Tests
-
-    ```console
-    $ npm test
     ```
 
     or
 
-    ```console
-    $ yarn test
+    ```javascript
+    // Only prototype
+    require("python-format-js");
+    ```
+
+
+## Tests
+
+3. Test:
+
+    ```bash
+    npm test
+    ```
+
+    or
+
+    ```bash
+    yarn test
     ```
 
 ## You Can Do
@@ -465,15 +474,6 @@ String formatting like Python's .format()
 "{:<5g}".format("T");
 
 ("T    ");
-```
-
-    - All Upper Case:
-
-```javascript
-"{:G}".format("Hello World");
-
-("HELLO WORLD");
-```
 
     - Thousands Separator:
 

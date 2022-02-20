@@ -1,9 +1,6 @@
-name: Deploy project
+name: Start project
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
