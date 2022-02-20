@@ -1,6 +1,7 @@
-/node_modules
-/coverage
-.github/
+node_modules
+coverage
+badges
+.github
 yarn-error.log
 yarn.lock
 package-lock.json
