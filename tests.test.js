@@ -193,6 +193,14 @@ test("Float", () => {
   expect("{:f}; {:f}".format(3.14, -3.14)).toEqual("3.140000; -3.140000");
 });
 
+test("Float precision 4", () => {
+  expect("This is PI: {:.4f}".format(Math.PI)).toEqual("This is PI: 3.1416");
+});
+
+test("Float precision 8", () => {
+  expect("This is PI: {:.8f}".format(Math.PI)).toEqual("This is PI: 3.14159265");
+});
+
 test("Float Space", () => {
   expect("{: f}; {: f}".format(3.14, -3.14)).toEqual(" 3.140000; -3.140000");
 });
@@ -348,5 +356,12 @@ test("zeros is missing:41", () => {
 test("Problem with formatting:42", () => {
   expect("001 {0: >7}  {1:74.2f}     ".format(1, 3.0)).toEqual(
     "001       1                                                                        3.00     "
+  );
+});
+
+// #48 from @CarstenNZ
+test("Throws on 0 argument for field {:<3}:48", () => {
+  expect("@{}/{:<3}".format(37032656, 0)).toEqual(
+    "@37032656/0  "
   );
 });
