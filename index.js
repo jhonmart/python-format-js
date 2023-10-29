@@ -10,6 +10,7 @@ Object.defineProperty(String.prototype, "format", {
       MASK_NUMBER,
       ALIGN_OP,
       CROP_SIZE,
+      DOT,
       FRACTION,
       TYPE_VAR,
     } = {
@@ -37,7 +38,7 @@ Object.defineProperty(String.prototype, "format", {
       let NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       let ACTUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       // Verify sintax/semantic
-      if (!ACTUAL_VALUE)
+      if (ACTUAL_VALUE === null || ACTUAL_VALUE === undefined)
         throw new Error(
           `Replacement index ${INDEX_VAR} out of range for positional args tuple`
         );
@@ -51,6 +52,7 @@ Object.defineProperty(String.prototype, "format", {
             : kargs[TYPE_VAR]) || kargs[TYPE_VAR];
         //  padronaze
         if (LETTER) {
+          const floatSize = pattern.includes(".") ? Number(kargs[FRACTION] || kargs[CROP_SIZE]) : DEFAULT_PLACE;
           switch (LETTER) {
             case "E":
               ACTUAL_VALUE =
@@ -70,9 +72,7 @@ Object.defineProperty(String.prototype, "format", {
               break;
             case "f":
             case "F":
-              ACTUAL_VALUE = ACTUAL_VALUE.toFixed(
-                kargs[FRACTION] || DEFAULT_PLACE
-              );
+              ACTUAL_VALUE = ACTUAL_VALUE.toFixed(floatSize);
               break;
             case "o":
               ACTUAL_VALUE = ACTUAL_VALUE.toString(8); // Octal
@@ -135,7 +135,8 @@ Object.defineProperty(String.prototype, "format", {
               ACTUAL_VALUE = ACTUAL_VALUE.padEnd(FILL_LENGTH, FILL_ELEMENT);
               break;
             case ".":
-              ACTUAL_VALUE = ACTUAL_VALUE.slice(0, SIZE_ARG);
+              if (!(LETTER && /[fF]/.test(LETTER)))
+                ACTUAL_VALUE = ACTUAL_VALUE.slice(0, SIZE_ARG);
               break;
             case ">":
               ACTUAL_VALUE = ACTUAL_VALUE.padStart(FILL_LENGTH, FILL_ELEMENT);
