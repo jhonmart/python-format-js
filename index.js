@@ -32,17 +32,22 @@ Object.defineProperty(String.prototype, "format", {
     __patterns__?.map((pattern, patt_index) => {
       const kargs = ALL_REGEXP.exec(pattern) || ALL_REGEXP.exec(pattern);
       const wargs = regExpBasic.exec(pattern);
+
       // Insert values (one 2 one / array / object)
-      
       const INDEX_VAR = (wargs ? wargs[REF] : kargs ? kargs[REF] : patt_index) || patt_index;
       let NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       let ACTUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
+
       // Verify sintax/semantic
       if (ACTUAL_VALUE === null || ACTUAL_VALUE === undefined)
         throw new Error(
           `Replacement index ${INDEX_VAR} out of range for positional args tuple`
         );
       if (kargs) {
+        // If TYPE_VAR is not defined and the first argument is a number, pad a string should from left, so set TYPE_VAR to "d"
+        if (kargs[TYPE_VAR] === undefined && typeof ACTUAL_VALUE === "number") {
+          kargs[TYPE_VAR] = "d";
+        }
         const LETTER =
           (!kargs[FILL_CHAR]
             ? false
@@ -52,7 +57,9 @@ Object.defineProperty(String.prototype, "format", {
             : kargs[TYPE_VAR]) || kargs[TYPE_VAR];
         //  padronaze
         if (LETTER) {
-          const floatSize = pattern.includes(".") ? Number(kargs[FRACTION] || kargs[CROP_SIZE]) : DEFAULT_PLACE;
+          const floatSize = pattern.includes(".")
+            ? Number(kargs[FRACTION] || kargs[CROP_SIZE])
+            : DEFAULT_PLACE;
           switch (LETTER) {
             case "E":
               ACTUAL_VALUE =
