@@ -365,3 +365,10 @@ test("Throws on 0 argument for field {:<3}:48", () => {
     "@37032656/0  "
   );
 });
+
+// #50 from @LanceMoe
+test("A number pad a string should from left:50", () => {
+  expect("{:04},{:010},{:010},{:5}".format(8, 9, 6.4, 'Test')).toEqual(
+    "0008,0000000009,00000006.4,Test "
+  );
+});
