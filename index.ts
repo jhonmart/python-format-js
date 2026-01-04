@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(String.prototype, "format", {
-  value: function (...args_) {
+  value: function (...args_: any) {
     // Create variables
     let self = this;
     let __patterns__ = self.match(/({.*?})/g);
@@ -10,7 +10,6 @@ Object.defineProperty(String.prototype, "format", {
       MASK_NUMBER,
       ALIGN_OP,
       CROP_SIZE,
-      DOT,
       FRACTION,
       TYPE_VAR,
     } = {
@@ -19,38 +18,30 @@ Object.defineProperty(String.prototype, "format", {
       MASK_NUMBER: 3,
       ALIGN_OP: 4,
       CROP_SIZE: 5,
-      DOT: 6,
+      // DOT: 6,
       FRACTION: 7,
       TYPE_VAR: 8,
     };
     const DEFAULT_PLACE = 6;
     const ALL_REGEXP =
-      /{(\w+)?:([^>\^<\d#]|0)?([#%,])?([>^<\.+])?(\d+)?(\.)?(\d+)?([eEfFgGdxXobn#%])?}/g;
+      /{(\w+)?:([^>\^<\d#]|0)?([#%,])?([>^<\.])?(\d+)?(\.)?(\d+)?([eEfFgGdxXobn#%])?}/g;
     const regExpBasic = /{\[?(\w+)\]?}/; // it's not best solution
     const isObject = typeof args_[0] === "object";
-    const configMode = typeof args_[1]?.strict === 'boolean' ? args_[1] : { strict: true };
     // types/use logic
-    __patterns__?.map((pattern, patt_index) => {
+    __patterns__?.map((pattern: string, patt_index: number) => {
       const kargs = ALL_REGEXP.exec(pattern) || ALL_REGEXP.exec(pattern);
       const wargs = regExpBasic.exec(pattern);
-
       // Insert values (one 2 one / array / object)
+      
       const INDEX_VAR = (wargs ? wargs[REF] : kargs ? kargs[REF] : patt_index) || patt_index;
       let NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       let ACTUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
-
       // Verify sintax/semantic
-      if (ACTUAL_VALUE === null || ACTUAL_VALUE === undefined) {
-        if (configMode.strict) throw new Error(
+      if (ACTUAL_VALUE === null || ACTUAL_VALUE === undefined)
+        throw new Error(
           `Replacement index ${INDEX_VAR} out of range for positional args tuple`
         );
-        else return (self = self.replace(pattern, ''));
-      }
       if (kargs) {
-        // If TYPE_VAR is not defined and the first argument is a number, pad a string should from left, so set TYPE_VAR to "d"
-        if (kargs[TYPE_VAR] === undefined && typeof ACTUAL_VALUE === "number") {
-          kargs[TYPE_VAR] = "d";
-        }
         const LETTER =
           (!kargs[FILL_CHAR]
             ? false
@@ -60,9 +51,6 @@ Object.defineProperty(String.prototype, "format", {
             : kargs[TYPE_VAR]) || kargs[TYPE_VAR];
         //  padronaze
         if (LETTER) {
-          const floatSize = pattern.includes(".")
-            ? Number(kargs[FRACTION] || kargs[CROP_SIZE])
-            : DEFAULT_PLACE;
           switch (LETTER) {
             case "E":
               ACTUAL_VALUE =
@@ -82,7 +70,9 @@ Object.defineProperty(String.prototype, "format", {
               break;
             case "f":
             case "F":
-              ACTUAL_VALUE = ACTUAL_VALUE.toFixed(floatSize);
+              ACTUAL_VALUE = ACTUAL_VALUE.toFixed(
+                kargs[FRACTION] || DEFAULT_PLACE
+              );
               break;
             case "o":
               ACTUAL_VALUE = ACTUAL_VALUE.toString(8); // Octal
@@ -104,15 +94,13 @@ Object.defineProperty(String.prototype, "format", {
           }
         }
         // signal
-        const refSignal = [..." +-,%"].includes(kargs[FILL_CHAR])
-          ? kargs[FILL_CHAR] : kargs[ALIGN_OP]
         if (
-          [..." +-,%"].includes(refSignal) &&
+          [..." +-,%"].includes(kargs[FILL_CHAR]) &&
           typeof NATUAL_VALUE === "number"
         ) {
           ACTUAL_VALUE = ACTUAL_VALUE.toString().replace("-", "");
           if (NATUAL_VALUE >= 0)
-            switch (refSignal) {
+            switch (kargs[FILL_CHAR]) {
               case "+":
                 ACTUAL_VALUE = "+" + ACTUAL_VALUE;
                 break;
@@ -127,7 +115,7 @@ Object.defineProperty(String.prototype, "format", {
               case "%":
                 ACTUAL_VALUE =
                   (NATUAL_VALUE * 100).toFixed(
-                    kargs[FRACTION] || DEFAULT_PLACE
+                    kargs[FRACTION] ? Number(kargs[FRACTION]) : DEFAULT_PLACE
                   ) + "%";
                 break;
             }
@@ -136,31 +124,18 @@ Object.defineProperty(String.prototype, "format", {
         // space / order / trim
         if (kargs[CROP_SIZE]) {
           ACTUAL_VALUE = ACTUAL_VALUE.toString();
-          let FILL_ELEMENT = kargs[FILL_CHAR] || " "; 
+          const FILL_ELEMENT = kargs[FILL_CHAR] || " ";
           const SIZE_STRING = ACTUAL_VALUE.length;
           const SIZE_ARG = kargs[CROP_SIZE];
           const FILL_LENGTH = SIZE_STRING > SIZE_ARG ? SIZE_STRING : SIZE_ARG;
-          if (/[>\^<=#+\- ,%]/.test(FILL_ELEMENT)) FILL_ELEMENT = " ";
+          const FILL = FILL_ELEMENT.repeat(FILL_LENGTH);
 
-          const refAlign = /[>\^<=\.]/.test(kargs[ALIGN_OP])
-            ? kargs[ALIGN_OP] : kargs[FILL_CHAR]
-
-          switch (refAlign) {
+          switch (kargs[ALIGN_OP] || kargs[FILL_CHAR]) {
             case "<":
               ACTUAL_VALUE = ACTUAL_VALUE.padEnd(FILL_LENGTH, FILL_ELEMENT);
               break;
             case ".":
-              if (!(LETTER && /[fF]/.test(LETTER)))
-                ACTUAL_VALUE = ACTUAL_VALUE.slice(0, SIZE_ARG);
-              break;
-            case "=":
-              const sign = ACTUAL_VALUE[0];
-              const number = ACTUAL_VALUE.slice(1);
-
-              const padLen = SIZE_ARG - sign.length - number.length;
-              const padding = padLen > 0 ? FILL_ELEMENT.repeat(padLen) : "";
-
-              ACTUAL_VALUE = sign + padding + number;
+              ACTUAL_VALUE = ACTUAL_VALUE.slice(0, SIZE_ARG);
               break;
             case ">":
               ACTUAL_VALUE = ACTUAL_VALUE.padStart(FILL_LENGTH, FILL_ELEMENT);
@@ -172,9 +147,10 @@ Object.defineProperty(String.prototype, "format", {
                   ? FILL_ELEMENT.repeat(length_start) + ACTUAL_VALUE
                   : ACTUAL_VALUE;
 
-              ACTUAL_VALUE =
-                string_start +
-                FILL_ELEMENT.repeat(FILL_LENGTH - string_start.length);
+              ACTUAL_VALUE = FILL.replace(
+                RegExp(`.{${string_start.length}}`),
+                string_start
+              );
               break;
             default:
               ACTUAL_VALUE = LETTER
@@ -192,4 +168,4 @@ Object.defineProperty(String.prototype, "format", {
     return self;
   },
 });
-module.exports = (inputString, ...param) => inputString.format(...param);
+module.exports = (inputString: string & { format: Function }, ...param: any) => inputString.format(...param);

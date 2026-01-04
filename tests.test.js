@@ -372,3 +372,44 @@ test("A number pad a string should from left:50", () => {
     "0008,0000000009,00000006.4,Test "
   );
 });
+
+// #53 from @volkerdobler
+test("Incorrect '=' Alignment in String Formatting for Numbers", () => {
+  expect("{:+10d}".format(-14)).toEqual(
+    "       -14"
+  );
+  expect("{:=10d}".format(-14)).toEqual(
+    "-       14"
+  );
+  expect("{:=+10d}".format(14)).toEqual(
+    "+       14"
+  );
+  expect("{:=+7d}".format(145678)).toEqual(
+    "+145678"
+  );
+});
+
+// #54 from @igorMSoares
+test("Treat words inside brackets as plain text, not placeholders", () => {
+  // Fail (strict = true)
+  var captured = null;
+  try {
+    expect("My name is {name} and i have {age} years old! {something}".format({
+    name: "Jônatas",
+    age: 21,
+  })).toEqual(
+      "My name is Jônatas and i have 21 years old! "
+    );
+  } catch (e) {
+    captured = e.message;
+  }
+  expect(captured).toBe("Replacement index something out of range for positional args tuple");
+
+  // Success (strict = false)
+  expect("My name is {name} and i have {age} years old! {something}".format({
+    name: "Jônatas",
+    age: 21,
+  }, { strict: false })).toEqual(
+    "My name is Jônatas and i have 21 years old! "
+  );
+});
