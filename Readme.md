@@ -1,488 +1,432 @@
 # Overview
 
-[![NPM](https://nodei.co/npm/python-format-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/python-format-js/)
+[![NPM](https://nodei.co/npm/python-format-js.png?downloads=true\&downloadRank=true\&stars=true)](https://nodei.co/npm/python-format-js/)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
-[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-functions.svg)](https://github.com/jhonmart/python-format-js/commits)
-[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-lines.svg)](https://github.com/jhonmart/python-format-js/commits)
-[![License: MIT](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-branches.svg)](https://github.com/jhonmart/python-format-js/commits)
+[![Functions](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-functions.svg)](https://github.com/jhonmart/python-format-js/commits)
+[![Lines](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-lines.svg)](https://github.com/jhonmart/python-format-js/commits)
+[![Branches](https://raw.githubusercontent.com/jhonmart/python-format-js/master/badges/badge-branches.svg)](https://github.com/jhonmart/python-format-js/commits)
 
-String formatting like Python's .format()
+**Python-style string formatting for JavaScript.**
 
-**Obs:The result expected is the same as Python**
+This library brings Python’s powerful `str.format()` syntax to JavaScript, keeping the behavior **as close as possible to Python**.
 
-## Install
+> ⚠️ **Note:**
+> The expected output is intentionally the same as Python’s `str.format`.
 
-#### Node
+---
 
-1.  Install:
+## Installation
 
-    ```bash
-    npm install python-format-js
-    ```
+### Node.js
 
-    or
+```bash
+npm install python-format-js
+```
 
-    ```bash
-    yarn add python-format-js
-    ```
+or
 
-2.  Require:
+```bash
+yarn add python-format-js
+```
 
-    ```javascript
-    // Module and prototype
-    const format = require("python-format-js");
-    ```
+### Usage
 
-    or
+```js
+// Import module + prototype
+const format = require("python-format-js");
+```
 
-    ```javascript
-    // Only prototype
-    require("python-format-js");
-    ```
+or (prototype only):
 
+```js
+require("python-format-js");
+```
+
+---
 
 ## Tests
 
-3. Test:
+```bash
+npm test
+```
 
-    ```bash
-    npm test
-    ```
+or
 
-    or
+```bash
+yarn test
+```
 
-    ```bash
-    yarn test
-    ```
+---
 
-## You Can Do
+## Features
 
-    -  Basic formatting
-    -  Padding and aligning strings
-    -  Truncating long strings
-    -  Combining truncating and padding
-    -  Signed numbers
-    -  Named placeholders
+You can:
 
-[See Documention in Python](https://pyformat.info/)
+* Basic positional formatting
+* Named placeholders (objects)
+* Padding and alignment
+* String truncation
+* Truncation + padding combined
+* Signed and formatted numbers
+* Numeric bases (binary, octal, hex)
+* Scientific notation
+* Percent and thousand separators
 
-## Supported Parameter Values
+📘 Python reference:
+[https://pyformat.info/](https://pyformat.info/)
 
-- [x] '<' - Left aligns the result (within the available space)
-- [x] '>' - Right aligns the result (within the available space)
-- [x] '^' - Center aligns the result (within the available space)
-- [x] '=' - Places the sign to the left most position
-- [x] '+' - Use a plus sign to indicate if the result is positive or negative
-- [x] '-' - Use a minus sign for negative values only
-- [x] ' ' - Use a leading space for positive numbers
-- [x] ',' - Use a comma as a thousand separator
-- [x] '\_' - Use a underscore as a thousand separator
-- [x] 'b' - Binary format
-- [x] 'c' - Converts the value into the corresponding unicode character
-- [x] 'd' - Decimal format
-- [x] 'e' - Scientific format, with a lower case e
-- [x] 'E' - Scientific format, with an upper case E
-- [x] 'f' - Fix point number format
-- [x] 'F' - Fix point number format, upper case
-- [x] 'g' - General format
-- [x] 'G' - General format (using a upper case E for scientific notations)
-- [x] 'o' - Octal format
-- [x] 'x' - Hex format, lower case
-- [x] 'X' - Hex format, upper case
-- [x] 'n' - Number format
-- [x] '%' - Percentage format
-- [x] '#' - Makes the format include the 0b prefix in (Octal,Hex,Binary)
+---
+
+## Supported Format Options
+
+### Alignment & Fill
+
+* `<` Left align
+* `>` Right align
+* `^` Center align
+* `=` Sign-aware padding
+
+### Sign
+
+* `+` Always show sign
+* `-` Only negative sign
+* ` ` Leading space for positive numbers
+
+### Numeric Formatting
+
+* `,` Thousand separator (comma)
+* `_` Thousand separator (underscore)
+* `b` Binary
+* `o` Octal
+* `x` Hex (lowercase)
+* `X` Hex (uppercase)
+* `d` Decimal
+* `n` Number
+* `e` Scientific (lowercase)
+* `E` Scientific (uppercase)
+* `f` Fixed-point
+* `g` General
+* `%` Percentage
+* `#` Prefix for binary, octal and hex (`0b`, `0o`, `0x`)
+
+---
 
 ## Examples
 
-## **Obs:The result expected is the same as Python**
+> ⚠️ **Reminder:** Output matches Python behavior.
 
-- Please report any bug
+---
 
-[More Examples](./Examples.md)
+### Basic formatting
 
-    - Simples Change:
-
-```javascript
+```js
 "{} {}".format("Jhon", "Mart");
-
-("Jhon Mart");
+// → "Jhon Mart"
 ```
 
-    - Advance Change Array:
+---
 
-```javascript
-"My name is {0} and i have {1} years old!".format(["Jônatas", 21]);
+### Positional arguments (array)
 
-("My name is Jônatas and i have 21 years old!");
+```js
+"My name is {0} and I am {1} years old.".format(["Jônatas", 21]);
+// → "My name is Jônatas and I am 21 years old."
 ```
 
-    - Advance Change Object:
+---
 
-```javascript
-"Your name is {name} and you have {age} years old!".format({
+### Named arguments (object)
+
+```js
+"My name is {name} and I am {age} years old.".format({
   name: "Jônatas",
   age: 21,
 });
-
-("My name is Jônatas and i have 21 years old!");
+// → "My name is Jônatas and I am 21 years old."
 ```
 
-    - One Argument type Number:
+---
 
-```javascript
-"{} ".format(2);
+### Single argument
 
-("2 ");
+```js
+"{}".format(2);        // "2"
+"{}".format(3.14);     // "3.14"
+"{}".format(true);     // "true"
 ```
 
-    - One Argument type Float:
+---
 
-```javascript
+### Multiple argument types
 
- "{} ".format(3.14))
-
- ("3.14 ");
-```
-
-    - One Argument type Boolean:
-
-```javascript
- "{} ".format(true))
-
- ("true ")
-```
-
-    - Multiple type Argument:
-
-```javascript
+```js
 "{} {} {}".format(2, 3.14, true);
-
-("2 3.14 true");
+// → "2 3.14 true"
 ```
 
-    - Overflow String Align Right:
+---
 
-```javascript
+## String Alignment & Padding
+
+### Left, Right and Center
+
+```js
+"{:<6}".format("oii"); // "oii   "
+"{:>6}".format("oii"); // "   oii"
+"{:^6}".format("oii"); // " oii  "
+"{:^7}".format("oii"); // "  oii  "
+```
+
+---
+
+### Custom fill character
+
+```js
+"{:_<7}".format("Jhon"); // "Jhon___"
+"{:_>7}".format("Jhon"); // "___Jhon"
+"{:_^7}".format("Jhon"); // "_Jhon__"
+```
+
+---
+
+### Overflow (no truncation by default)
+
+```js
 "{:^3}".format("Gustavo");
-
-("Gustavo");
+// → "Gustavo"
 ```
 
-    - Overflow String Align Center:
+---
 
-```javascript
-"{:^3}".format("Gustavo");
+## String Truncation
 
-("Gustavo");
-```
-
-    - Align Left:
-
-```javascript
-"{:<6}".format("oii");
-
-("oii   ");
-```
-
-    - Align Right:
-
-```javascript
-"{:>6}".format("oii");
-
-("   oii");
-```
-
-    - Align Center Incomplete:
-
-```javascript
-"{:^6}".format("oii");
-
-(" oii  ");
-```
-
-    - Align Center Complete:
-
-```javascript
-"{:^7}".format("oii");
-
-("  oii  ");
-```
-
-    - Crop:
-
-```javascript
+```js
 "{:.7}".format("Jonatas Martins");
-
-("Jonatas");
+// → "Jonatas"
 ```
 
-    - Size String:
+---
 
-```javascript
+### Fixed size (padding only)
+
+```js
 "{:10}".format("test");
-
-("test      ");
+// → "test      "
 ```
 
-    - Char Append Left:
+---
 
-```javascript
-"{:_<7}".format("Jhon");
+## Numbers & Floats
 
-("Jhon___");
-```
+### Fixed-point
 
-    - Char Append Right:
-
-```javascript
-"{:_>7}".format("Jhon");
-
-("___Jhon");
-```
-
-    - Char Append Center Incomplete:
-
-```javascript
-"{:_^7}".format("Jhon");
-
-("_Jhon__");
-```
-
-    - String and param left align:
-
-```javascript
-"Olá {:<8}".format("Jhon");
-
-("Olá Jhon    ");
-```
-
-    - String and param right align:
-
-```javascript
-"Olá {:>8}".format("Jhon");
-
-("Olá     Jhon");
-```
-
-    - String and param center align:
-
-```javascript
-"Olá {:^8}".format("Jhon");
-
-("Olá   Jhon  ");
-```
-
-    - Float:
-
-```javascript
+```js
 "{:f}; {:f}".format(3.14, -3.14);
-
-("3.140000; -3.140000");
+// → "3.140000; -3.140000"
 ```
 
-    - Float Space:
+---
 
-```javascript
-"{: f}; {: f}".format(3.14, -3.14);
+### Sign handling
 
-(" 3.140000; -3.140000");
-```
-
-    - Float Align:
-
-```javascript
-"{:<15f}; {: f}".format(3.14, -3.14);
-
-("3.140000       ; -3.140000");
-```
-
-    - Float Plus:
-
-```javascript
+```js
 "{:+f}; {:+f}".format(3.14, -3.14);
+// → "+3.140000; -3.140000"
 
-("+3.140000; -3.140000");
+"{: f}; {: f}".format(3.14, -3.14);
+// → " 3.140000; -3.140000"
 ```
 
-    - Float Less:
+---
 
-```javascript
-"{:-f}; {:-f}".format(3.14, -3.14);
+### Alignment with numbers
 
-("3.140000; -3.140000");
+```js
+"{:<15f}; {: f}".format(3.14, -3.14);
+// → "3.140000       ; -3.140000"
 ```
 
-    - Number Simple:
+---
 
-```javascript
-"{:n} é maior que {:n} ".format(3.14, 21);
+## Numeric Bases
 
-("3.14 é maior que 21 ");
+### Binary
+
+```js
+"{:b}".format(42);     // "101010"
+"{:#b}".format(42);    // "0b101010"
+"{:>4b}".format(5);    // " 101"
 ```
 
-    - Binary:
+---
 
-```javascript
-"{:b}".format(42);
+### Octal
 
-("101010");
+```js
+"{:o}".format(42);     // "52"
+"{:#o}".format(42);    // "0o52"
+"{:+#o}".format(4233); // "+0o10211"
+"{:-#o}".format(-4233);// "-0o10211"
 ```
 
-    - Binary Align:
+---
 
-```javascript
-"{:>4b}".format(5);
+### Hexadecimal
 
-(" 101");
+```js
+"{:x}".format(42);     // "2a"
+"{:#x}".format(42);    // "0x2a"
+"{:#X}".format(42);    // "0X2A"
 ```
 
-    - Binary Mask:
+---
 
-```javascript
-"{:#b}".format(42);
+## Scientific & Percentage
 
-("0b101010");
+```js
+"{:e}".format(4233);   // "4.233e+3"
+"{:E}".format(4233);   // "4.233E+3"
+"{:%}".format(0.065);  // "6.500000%"
 ```
 
-    - Octal:
+---
 
-```javascript
-"{:o}".format(42);
+## Thousand Separator
 
-("52");
-```
-
-    - Octal Mask:
-
-```javascript
-"{:#o}".format(42);
-
-("0o52");
-```
-
-    - Octal Mask Sign:
-
-```javascript
-"{:-o}".format(42);
-
-("+52");
-```
-
-    - Octal Mask Space:
-
-```javascript
-"{: o}".format(42);
-
-(" 52");
-```
-
-    - Number Octal Positive:
-
-```javascript
-"{:+#o}".format(4233);
-
-("+0o10211");
-```
-
-    - Number Octal Negative:
-
-```javascript
-"{:-#o}".format(-4233);
-
-("-0o10211");
-```
-
-    - Hexadecimal:
-
-```javascript
-"{:x}".format(42);
-
-("2a");
-```
-
-    - Hexadecimal Mask:
-
-```javascript
-"{:#x}".format(42);
-
-("0x2a");
-```
-
-    - Hexadecimal Mask Upper Case:
-
-```javascript
-"{:#X}".format(42);
-
-("0X2A");
-```
-
-    - Decimal Number:
-
-```javascript
-"{:d}".format(42);
-
-("42");
-```
-
-    - Exp:
-
-```javascript
-"{:e}".format(4233);
-
-("4.233e+3");
-```
-
-    - Exp Upper Case:
-
-```javascript
-"{:E}".format(4233);
-
-("4.233E+3");
-```
-
-    - Exp Size Over:
-
-```javascript
-"{:<15e}".format(4233);
-
-("4.233e+3       ");
-```
-
-    - Percent:
-
-```javascript
-"{:%}".format(0.065);
-
-("6.500000%");
-```
-
-    - All data:
-
-```javascript
-"{:g}".format("Hello World");
-
-("Hello World");
-```
-
-    - Align All:
-
-```javascript
-"{:<5g}".format("T");
-
-("T    ");
-
-    - Thousands Separator:
-
-```javascript
+```js
 "{:,}".format(1234567890);
-
-("1,234,567,890");
+// → "1,234,567,890"
 ```
 
-### Help us
+---
 
-[CONTRIBUTING](./CONTRIBUTING.md)
+## 🔹 Direct Array Index Access (`{[n]}`)
+
+```js
+"{[1]}".format([1, 2, 3]);
+// → "2"
+```
+
+---
+
+## 🔹 Zero Padding (`0`)
+
+```js
+"{:03d}".format(7);
+// → "007"
+
+"{:04}".format(8);
+// → "0008"
+```
+
+---
+
+## 🔹 Numeric Padding Applied to Strings (Issue #50)
+
+```js
+"{:04},{:010},{:010},{:5}".format(8, 9, 6.4, "Test");
+// → "0008,0000000009,00000006.4,Test "
+```
+
+---
+
+## 🔹 Sign-Aware Alignment (`=`) — Issue #53
+
+```js
+"{:+10d}".format(-14);
+// → "       -14"
+
+"{:=10d}".format(-14);
+// → "-       14"
+
+"{:=+10d}".format(14);
+// → "+       14"
+
+"{:=+7d}".format(145678);
+// → "+145678"
+```
+
+---
+
+## 🔹 Float Precision (`.Nf`)
+
+```js
+"This is PI: {:.4f}".format(Math.PI);
+// → "This is PI: 3.1416"
+
+"This is PI: {:.8f}".format(Math.PI);
+// → "This is PI: 3.14159265"
+```
+
+---
+
+## 🔹 Thousand Separator with Underscore (`_`)
+
+```js
+"{:_}".format(1234567890);
+// → "1_234_567_890"
+```
+
+---
+
+## 🔹 Full Python Numeric Format (Complex Specifier)
+
+```js
+"{num:_^+#20,.4f}".format({ num: 12345.67890123 });
+// → "____+12,345.6789____"
+```
+
+---
+
+## 🔹 Function-Only Import (No Prototype)
+
+```js
+const Format = require("python-format-js");
+
+Format("{:E}", 4233);
+// → "4.233000E+3"
+```
+
+## 🔹 Strict Mode (`strict: false`) — Issue #54
+
+### Default Behavior (strict = true → throws)
+
+```js
+"My name is {name} {something}".format({
+  name: "Jônatas",
+  age: 21,
+});
+// ❌ Throws error
+```
+
+### Non-Strict Mode (ignores missing placeholders)
+
+```js
+"My name is {name} {something}".format(
+  { name: "Jônatas", age: 21 },
+  { strict: false }
+);
+// → "My name is Jônatas "
+```
+
+---
+
+## 🔹 Documented Error Cases
+
+```js
+"{}".format();          // ❌ index out of range
+"{:a}".format(123);     // ❌ invalid format specifier
+"{2}".format("a", "b"); // ❌ index out of range
+```
+
+---
+
+## Help Us
+
+* Found a bug? Please report it 🙏
+* Contributions are welcome!
+
+📄 [CONTRIBUTING](./CONTRIBUTING.md)

@@ -190,7 +190,7 @@ test("Center Ast", () => {
 });
 
 test("Float", () => {
-  expect("{:f}; {:f}".format(3.14, -3.14)).toEqual("3.140000; -3.140000");
+  expect("{:f}; {:F}".format(3.14, -3.14)).toEqual("3.140000; -3.140000");
 });
 
 test("Float precision 4", () => {
@@ -301,6 +301,13 @@ test("Align All", () => {
 
 test("Thousands Separator", () => {
   expect("{:,}".format(1234567890)).toEqual("1,234,567,890");
+  expect("{:_}".format(1234567890)).toEqual("1_234_567_890");
+});
+
+test("Full python numeric format", () => {
+  expect("{num_value:_^+#20,.4f}"
+    .format({ num_value: 12345.67890123 }))
+    .toEqual("____+12,345.6789____");
 });
 
 test("Fail char", () => {
@@ -413,3 +420,24 @@ test("Treat words inside brackets as plain text, not placeholders", () => {
     "My name is Jônatas and i have 21 years old! "
   );
 });
+
+// Improve
+// const { performance } = require('perf_hooks');
+
+// test("performance evaluation", () => {
+//   const t0 = performance.now();
+//   for (let i = 0; i < 1e6; i++) {
+//     "My fisrt name is {} and last {}".format("Jhon", "Mart")
+//     "{:<5} {:>8}".format("Jhon", "Mart")
+//     "{:_^7}".format("Jhon")
+//     "My age is {1} and my name is {0}".format("Jhon", "21")
+//     "My name is {name} and i have {age} years old!".format({
+//       name: "Jônatas",
+//       age: 27,
+//     })
+//   }
+//   const t1 = performance.now();
+
+//   console.info(t1 - t0);
+//   expect(t1 - t0).toBeLessThanOrEqual(10e3)
+// });

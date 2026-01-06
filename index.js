@@ -1,42 +1,54 @@
 "use strict";
+
+// consts
+const PREFIX_MASK = {
+  x: "0x",
+  X: "0X",
+  o: "0o",
+  b: "0b",
+};
+
+const formatters = {
+  E: (v, size) => v.toExponential(size).toUpperCase(),
+  e: (v, size) => v.toExponential(size),
+  X: (v) => v.toString(16).toUpperCase(),
+  x: (v) => v.toString(16),
+  b: (v) => v.toString(2),
+  o: (v) => v.toString(8),
+  f: (v, size) => v.toFixed(size),
+  F: (v, size) => v.toFixed(size),
+};
+
+const ALIGN_LEFT = 0;
+const ALIGN_RIGHT = 1;
+const ALIGN_CENTER = 2;
+const ALIGN_SIGN = 3;
+
+const ALIGN_MAP = { "<": 0, ">": 1, "^": 2, "=": 3 };
+
+const DEFAULT_PLACE = 6;
+const ALL_REGEXP =
+  /\{(?<ref>\w+)?:((?:(?<fill>[^>\^<\d#]|0)(?<align>[<>=^])|(?<align_only>[<>=^]))?(?<sign>[+\- ])?(?<alt>#)?(?<zero>0)?(?<width>\d+)?(?<group>[,_])?(?<dot>\.)?(?<precision>\d+)?(?<type>[eEfFgGdxXobn%])?)\}/g;
+const regExpBasic = /{\[?(\w+)\]?}/; // it's not best solution
+
+
 Object.defineProperty(String.prototype, "format", {
   value: function (...args_) {
     // Create variables
     let self = this;
     let __patterns__ = self.match(/({.*?})/g);
-    const {
-      REF,
-      FILL_CHAR,
-      MASK_NUMBER,
-      ALIGN_OP,
-      CROP_SIZE,
-      DOT,
-      FRACTION,
-      TYPE_VAR,
-    } = {
-      REF: 1,
-      FILL_CHAR: 2,
-      MASK_NUMBER: 3,
-      ALIGN_OP: 4,
-      CROP_SIZE: 5,
-      DOT: 6,
-      FRACTION: 7,
-      TYPE_VAR: 8,
-    };
-    const DEFAULT_PLACE = 6;
-    const ALL_REGEXP =
-      /{(\w+)?:([^>\^<\d#]|0)?([#%,])?([>^<\.+])?(\d+)?(\.)?(\d+)?([eEfFgGdxXobn#%])?}/g;
-    const regExpBasic = /{\[?(\w+)\]?}/; // it's not best solution
     const isObject = typeof args_[0] === "object";
     const configMode = typeof args_[1]?.strict === 'boolean' ? args_[1] : { strict: true };
+    
     // types/use logic
-    __patterns__?.map((pattern, patt_index) => {
-      const kargs = ALL_REGEXP.exec(pattern) || ALL_REGEXP.exec(pattern);
+    __patterns__?.forEach((pattern, patt_index) => {
+      ALL_REGEXP.lastIndex = 0;
+      const kargs = ALL_REGEXP.exec(pattern)?.groups;
       const wargs = regExpBasic.exec(pattern);
 
       // Insert values (one 2 one / array / object)
-      const INDEX_VAR = (wargs ? wargs[REF] : kargs ? kargs[REF] : patt_index) || patt_index;
-      let NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
+      const INDEX_VAR = (wargs ? wargs[1] : kargs ? kargs.ref : patt_index) || patt_index;
+      const NATUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
       let ACTUAL_VALUE = isObject ? args_[0][INDEX_VAR] : args_[INDEX_VAR];
 
       // Verify sintax/semantic
@@ -47,134 +59,82 @@ Object.defineProperty(String.prototype, "format", {
         else return (self = self.replace(pattern, ''));
       }
       if (kargs) {
-        // If TYPE_VAR is not defined and the first argument is a number, pad a string should from left, so set TYPE_VAR to "d"
-        if (kargs[TYPE_VAR] === undefined && typeof ACTUAL_VALUE === "number") {
-          kargs[TYPE_VAR] = "d";
-        }
-        const LETTER =
-          (!kargs[FILL_CHAR]
-            ? false
-            : !kargs[ALIGN_OP] &&
-              [..."FfbefoxXn"].includes(kargs[FILL_CHAR].toLowerCase())
-            ? kargs[FILL_CHAR]
-            : kargs[TYPE_VAR]) || kargs[TYPE_VAR];
+        const ALIGN_OP = kargs.align || kargs.align_only
+        const LETTER = " eEfFgGdxXobn".indexOf(kargs.type) && kargs.type
         //  padronaze
-        if (LETTER) {
-          const floatSize = pattern.includes(".")
-            ? Number(kargs[FRACTION] || kargs[CROP_SIZE])
+        if (LETTER && formatters[LETTER]) {
+          const floatSize = kargs.dot
+            ? Number(kargs.precision)
             : DEFAULT_PLACE;
-          switch (LETTER) {
-            case "E":
-              ACTUAL_VALUE =
-                ACTUAL_VALUE.toExponential(DEFAULT_PLACE).toUpperCase();
-              break;
-            case "e":
-              ACTUAL_VALUE = ACTUAL_VALUE.toExponential(DEFAULT_PLACE);
-              break;
-            case "X":
-              ACTUAL_VALUE = ACTUAL_VALUE.toString(16).toUpperCase();
-              break;
-            case "x":
-              ACTUAL_VALUE = ACTUAL_VALUE.toString(16); // Hexadecimal
-              break;
-            case "b":
-              ACTUAL_VALUE = ACTUAL_VALUE.toString(2); // Binary
-              break;
-            case "f":
-            case "F":
-              ACTUAL_VALUE = ACTUAL_VALUE.toFixed(floatSize);
-              break;
-            case "o":
-              ACTUAL_VALUE = ACTUAL_VALUE.toString(8); // Octal
-              break;
-            default:
-              break;
-          }
+          ACTUAL_VALUE = formatters[LETTER](NATUAL_VALUE, floatSize);
           //  mask
-          switch (kargs[MASK_NUMBER]) {
-            case "#":
-              const MASK = {
-                x: "0x",
-                X: "0X",
-                o: "0o",
-                b: "0b",
-              }[LETTER];
-              ACTUAL_VALUE = MASK + ACTUAL_VALUE;
-              break;
+          const mask = PREFIX_MASK[LETTER];
+          if (kargs.alt && mask) {
+            ACTUAL_VALUE = mask + ACTUAL_VALUE;
+          }
+        } else ACTUAL_VALUE = ACTUAL_VALUE.toString()
+        // signal
+        if (kargs.group) {
+          const numberDot = ACTUAL_VALUE.indexOf(".");
+          if (numberDot !== -1) {
+            ACTUAL_VALUE =
+              ACTUAL_VALUE.slice(0, numberDot).replace(/\B(?=(\d{3})+(?!\d))/g, kargs.group) +
+              ACTUAL_VALUE.slice(numberDot);
+          } else {
+            ACTUAL_VALUE = ACTUAL_VALUE.replace(/\B(?=(\d{3})+(?!\d))/g, kargs.group);
           }
         }
-        // signal
-        const refSignal = [..." +-,%"].includes(kargs[FILL_CHAR])
-          ? kargs[FILL_CHAR] : kargs[ALIGN_OP]
-        if (
-          [..." +-,%"].includes(refSignal) &&
-          typeof NATUAL_VALUE === "number"
-        ) {
-          ACTUAL_VALUE = ACTUAL_VALUE.toString().replace("-", "");
-          if (NATUAL_VALUE >= 0)
-            switch (refSignal) {
-              case "+":
-                ACTUAL_VALUE = "+" + ACTUAL_VALUE;
-                break;
-              case " ":
-                ACTUAL_VALUE = " " + ACTUAL_VALUE;
-                break;
-              case ",":
-                ACTUAL_VALUE = NATUAL_VALUE.toString()
-                  .split(/(?=(?:...)*$)/)
-                  .join(kargs[FILL_CHAR]);
-                break;
-              case "%":
-                ACTUAL_VALUE =
-                  (NATUAL_VALUE * 100).toFixed(
-                    kargs[FRACTION] || DEFAULT_PLACE
-                  ) + "%";
-                break;
-            }
-          else ACTUAL_VALUE = "-" + ACTUAL_VALUE;
+        if (kargs.type === "%") {
+          ACTUAL_VALUE = (NATUAL_VALUE * 100)
+            .toFixed(kargs.precision ?? DEFAULT_PLACE) + "%";
         }
+        if ("+\- ".indexOf(kargs.sign) >= 0 && typeof NATUAL_VALUE === "number") {
+          const s = kargs.sign;
+          ACTUAL_VALUE =
+            ((NATUAL_VALUE < 0 && "-") || (s === "+" && "+") || (s === " " && " ") || "") +
+            ACTUAL_VALUE.replace("-", "");
+        }
+
         // space / order / trim
-        if (kargs[CROP_SIZE]) {
-          ACTUAL_VALUE = ACTUAL_VALUE.toString();
-          let FILL_ELEMENT = kargs[FILL_CHAR] || " "; 
+        if (kargs.dot && !(LETTER && " fF".indexOf(LETTER)))
+          ACTUAL_VALUE = ACTUAL_VALUE.slice(0, kargs.precision);
+
+        if (kargs.width) {
+          let FILL_ELEMENT = kargs.fill || kargs.zero || " "; 
           const SIZE_STRING = ACTUAL_VALUE.length;
-          const SIZE_ARG = kargs[CROP_SIZE];
+          const SIZE_ARG = kargs.width;
           const FILL_LENGTH = SIZE_STRING > SIZE_ARG ? SIZE_STRING : SIZE_ARG;
-          if (/[>\^<=#+\- ,%]/.test(FILL_ELEMENT)) FILL_ELEMENT = " ";
 
-          const refAlign = /[>\^<=\.]/.test(kargs[ALIGN_OP])
-            ? kargs[ALIGN_OP] : kargs[FILL_CHAR]
+          const align = kargs.zero ? ">" : ALIGN_OP
 
-          switch (refAlign) {
-            case "<":
+          switch (ALIGN_MAP[align]) {
+            case ALIGN_LEFT:
               ACTUAL_VALUE = ACTUAL_VALUE.padEnd(FILL_LENGTH, FILL_ELEMENT);
               break;
-            case ".":
-              if (!(LETTER && /[fF]/.test(LETTER)))
-                ACTUAL_VALUE = ACTUAL_VALUE.slice(0, SIZE_ARG);
-              break;
-            case "=":
-              const sign = ACTUAL_VALUE[0];
-              const number = ACTUAL_VALUE.slice(1);
-
-              const padLen = SIZE_ARG - sign.length - number.length;
-              const padding = padLen > 0 ? FILL_ELEMENT.repeat(padLen) : "";
-
-              ACTUAL_VALUE = sign + padding + number;
-              break;
-            case ">":
+            case ALIGN_RIGHT:
               ACTUAL_VALUE = ACTUAL_VALUE.padStart(FILL_LENGTH, FILL_ELEMENT);
               break;
-            case "^":
-              const length_start = Math.floor((FILL_LENGTH - SIZE_STRING) / 2);
-              const string_start =
-                length_start > 0
-                  ? FILL_ELEMENT.repeat(length_start) + ACTUAL_VALUE
-                  : ACTUAL_VALUE;
+            case ALIGN_SIGN:
+                const sign = ACTUAL_VALUE[0];
+                const number = ACTUAL_VALUE.slice(1);
+                const padLen = SIZE_ARG - number.length - 1;
 
-              ACTUAL_VALUE =
-                string_start +
-                FILL_ELEMENT.repeat(FILL_LENGTH - string_start.length);
+                if (padLen > 0) {
+                  ACTUAL_VALUE = sign + FILL_ELEMENT.repeat(padLen) + number;
+                }
+              break;
+            case ALIGN_CENTER:
+              const totalPad = FILL_LENGTH - SIZE_STRING;
+
+              if (totalPad > 0) {
+                const left = totalPad >> 1;
+                const right = totalPad - left;
+
+                ACTUAL_VALUE =
+                  FILL_ELEMENT.repeat(left) +
+                  ACTUAL_VALUE +
+                  FILL_ELEMENT.repeat(right);
+              }
               break;
             default:
               ACTUAL_VALUE = LETTER
