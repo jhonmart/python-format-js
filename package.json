@@ -12,6 +12,12 @@
     "type": "git",
     "url": "git+https://github.com/jhonmart/python-format-js.git"
   },
+  "files": [
+    "index.js",
+    "types/index.d.ts",
+    "LICENSE",
+    "README.md"
+  ],
   "keywords": [
     "string",
     "formatting",

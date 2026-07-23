@@ -1,7 +1,5 @@
 # Overview
 
-[![NPM](https://nodei.co/npm/python-format-js.png?downloads=true\&downloadRank=true\&stars=true)](https://nodei.co/npm/python-format-js/)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/python-format-js.svg)](https://badge.fury.io/js/python-format-js)
 
@@ -15,6 +13,14 @@ This library brings Python’s powerful `str.format()` syntax to JavaScript, kee
 
 > ⚠️ **Note:**
 > The expected output is intentionally the same as Python’s `str.format`.
+
+## Contributors
+
+Thanks goes to these wonderful people:
+
+<a href="https://github.com/jhonmart/python-format-js/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jhonmart/python-format-js" />
+</a>
 
 ---
 
