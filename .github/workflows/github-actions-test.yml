@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 24.x
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Run unitary test
-        run: yarn test
+        run: npm run test
 
       - name: Config test
         uses: actions/upload-artifact@v4
@@ -29,7 +29,7 @@ jobs:
           retention-days: 3
 
       - name: Generation badges
-        run: yarn ge:badges
+        run: npm run ge:badges
 
       - name: Deploy badges
         uses: test-room-7/action-update-file@v1
